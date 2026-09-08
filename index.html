@@ -3,229 +3,499 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Статус Стримов</title>
-  <style>
-    :root {
-      --bg-color: #0f172a;
-      --card-bg: #1e293b;
-      --item-bg: #334155;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --live-color: #22c55e;
-      --offline-color: #64748b;
-    }
+  <title>Мои Ссылки | v1kusha</title>
 
+  <!-- Подключение иконок Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Подключение шрифта Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. СБРОС СТИЛЕЙ И ПЕРЕМЕННЫЕ
+       ========================================================================== */
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    :root {
+      --bg-color: #0c0d12;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #ffffff;
+      --text-secondary: #9da4b0;
+
+      /* Бренд-цвета платформ */
+      --twitch-color: #9146ff;
+      --youtube-color: #ff0000;
+      --vk-color: #0077ff;
+      --kick-color: #53fc18;
+      --goodgame-color: #1a73e8;
+      --telegram-color: #24a1de;
+      --discord-color: #5865f2;
+      --boosty-color: #f15f2c;
+      --donatty-color: #a855f7;
+      --donationalerts-color: #f59e0b;
+      --fetta-color: #ec4899;
+      --memes-color: #6366f1;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: var(--bg-color);
-      color: var(--text-main);
+      color: var(--text-primary);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      padding: 1rem;
+      padding: 24px 16px;
+      position: relative;
+      overflow-x: hidden;
     }
 
-    .card {
-      background-color: var(--card-bg);
-      padding: 2rem;
-      border-radius: 1.25rem;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
-      width: 100%;
-      max-width: 420px;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-
-    h1 {
-      font-size: 1.35rem;
-      font-weight: 700;
-    }
-
-    .connection-status {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
+    /* ==========================================================================
+       2. СВЕТЯЩИЙСЯ ФОН
+       ========================================================================== */
+    .bg-glow {
+      position: absolute;
+      width: 350px;
+      height: 350px;
       border-radius: 50%;
-      background-color: var(--offline-color);
-      transition: background-color 0.3s ease;
+      filter: blur(130px);
+      z-index: 0;
+      pointer-events: none;
     }
 
-    .dot.connected {
-      background-color: var(--live-color);
-      box-shadow: 0 0 8px var(--live-color);
+    .glow-1 {
+      background: rgba(145, 70, 255, 0.22);
+      top: 5%;
+      left: 10%;
     }
 
-    .status-list {
+    .glow-2 {
+      background: rgba(0, 119, 255, 0.18);
+      bottom: 5%;
+      right: 10%;
+    }
+
+    /* ==========================================================================
+       3. ОСНОВНАЯ КАРТОЧКА
+       ========================================================================== */
+    .card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 440px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 32px 20px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+
+    /* ==========================================================================
+       4. АВАТАР И ИНФО
+       ========================================================================== */
+    .avatar-container {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 16px;
+    }
+
+    .avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .username {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      letter-spacing: -0.5px;
+    }
+
+    .description {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
+
+    /* ==========================================================================
+       5. РАЗДЕЛИТЕЛИ СЕКЦИЙ
+       ========================================================================== */
+    .section-title {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin: 22px 0 10px 0;
+      color: var(--text-secondary);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      opacity: 0.85;
+    }
+
+    .section-title::before,
+    .section-title::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .section-title::before { margin-right: 12px; }
+    .section-title::after { margin-left: 12px; }
+
+    .links {
       display: flex;
       flex-direction: column;
-      gap: 0.85rem;
+      gap: 10px;
     }
 
-    .platform {
+    /* ==========================================================================
+       6. КНОПКИ ССЫЛОК
+       ========================================================================== */
+    .btn {
+      position: relative;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 0.85rem 1.1rem;
-      background-color: var(--item-bg);
-      border-radius: 0.75rem;
-      transition: transform 0.2s ease, background-color 0.2s ease;
-    }
-
-    .platform:hover {
-      transform: translateY(-1px);
-    }
-
-    .platform-name {
+      justify-content: center;
+      padding: 13px 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      color: var(--text-primary);
+      text-decoration: none;
       font-weight: 600;
-      font-size: 1rem;
+      font-size: 13px;
+      letter-spacing: 0.2px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
     }
 
-    .badge {
-      font-size: 0.8rem;
-      font-weight: 700;
-      padding: 0.3rem 0.85rem;
-      border-radius: 9999px;
-      letter-spacing: 0.05em;
-      transition: all 0.3s ease;
+    .btn .icon-box {
+      position: absolute;
+      left: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      font-size: 18px;
+      transition: transform 0.25s ease;
     }
 
-    .badge.offline {
-      background-color: #475569;
-      color: var(--text-muted);
+    .btn span.btn-text {
+      padding: 0 30px;
+      text-align: center;
     }
 
-    .badge.live {
-      background-color: var(--live-color);
+    .btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .btn:hover .icon-box {
+      transform: scale(1.15);
+    }
+
+    /* ==========================================================================
+       7. ИНДИКАТОРЫ LIVE И ПОДСВЕТКА ПО ЦВЕТУ ПЛАТФОРМЫ
+       ========================================================================== */
+    .live-badge {
+      display: none; /* По умолчанию скрыт, включается через JS при LIVE */
+      position: absolute;
+      right: 14px;
       color: #ffffff;
-      box-shadow: 0 0 12px rgba(34, 197, 94, 0.6);
+      font-size: 9px;
+      font-weight: 800;
+      padding: 3px 7px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* Анимация пульсации плашки */
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 var(--badge-glow); }
+      70% { box-shadow: 0 0 0 6px rgba(0, 0, 0, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+    }
+
+    /* Twitch - LIVE */
+    .btn-twitch.btn-live {
+      border-color: rgba(145, 70, 255, 0.6) !important;
+      background: rgba(145, 70, 255, 0.12) !important;
+      box-shadow: 0 0 15px rgba(145, 70, 255, 0.25);
+    }
+    .btn-twitch.btn-live .live-badge {
+      display: inline-block;
+      background: var(--twitch-color);
+      --badge-glow: rgba(145, 70, 255, 0.7);
       animation: pulse 2s infinite;
     }
 
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-      }
-      70% {
-        box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
-      }
-      100% {
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-      }
+    /* YouTube - LIVE */
+    .btn-youtube.btn-live {
+      border-color: rgba(255, 0, 0, 0.6) !important;
+      background: rgba(255, 0, 0, 0.12) !important;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.25);
+    }
+    .btn-youtube.btn-live .live-badge {
+      display: inline-block;
+      background: var(--youtube-color);
+      --badge-glow: rgba(255, 0, 0, 0.7);
+      animation: pulse 2s infinite;
+    }
+
+    /* VK Video - LIVE */
+    .btn-vk.btn-live {
+      border-color: rgba(0, 119, 255, 0.6) !important;
+      background: rgba(0, 119, 255, 0.12) !important;
+      box-shadow: 0 0 15px rgba(0, 119, 255, 0.25);
+    }
+    .btn-vk.btn-live .live-badge {
+      display: inline-block;
+      background: var(--vk-color);
+      --badge-glow: rgba(0, 119, 255, 0.7);
+      animation: pulse 2s infinite;
+    }
+
+    /* Kick - LIVE */
+    .btn-kick.btn-live {
+      border-color: rgba(83, 252, 24, 0.6) !important;
+      background: rgba(83, 252, 24, 0.12) !important;
+      box-shadow: 0 0 15px rgba(83, 252, 24, 0.25);
+    }
+    .btn-kick.btn-live .live-badge {
+      display: inline-block;
+      background: var(--kick-color);
+      color: #000000;
+      --badge-glow: rgba(83, 252, 24, 0.7);
+      animation: pulse 2s infinite;
+    }
+
+    /* GoodGame - LIVE */
+    .btn-goodgame.btn-live {
+      border-color: rgba(26, 115, 232, 0.6) !important;
+      background: rgba(26, 115, 232, 0.12) !important;
+      box-shadow: 0 0 15px rgba(26, 115, 232, 0.25);
+    }
+    .btn-goodgame.btn-live .live-badge {
+      display: inline-block;
+      background: var(--goodgame-color);
+      --badge-glow: rgba(26, 115, 232, 0.7);
+      animation: pulse 2s infinite;
+    }
+
+    /* ==========================================================================
+       8. ЦВЕТА ПРИ НАВЕДЕНИИ МЫШИ (HOVER)
+       ========================================================================== */
+    .btn-vk:hover { border-color: var(--vk-color); box-shadow: 0 4px 20px rgba(0, 119, 255, 0.3); }
+    .btn-kick:hover { border-color: var(--kick-color); box-shadow: 0 4px 20px rgba(83, 252, 24, 0.25); }
+    .btn-goodgame:hover { border-color: var(--goodgame-color); box-shadow: 0 4px 20px rgba(26, 115, 232, 0.3); }
+    .btn-twitch:hover { border-color: var(--twitch-color); box-shadow: 0 4px 20px rgba(145, 70, 255, 0.3); }
+    .btn-youtube:hover { border-color: var(--youtube-color); box-shadow: 0 4px 20px rgba(255, 0, 0, 0.3); }
+    .btn-telegram:hover { border-color: var(--telegram-color); box-shadow: 0 4px 20px rgba(36, 161, 222, 0.3); }
+    .btn-discord:hover { border-color: var(--discord-color); box-shadow: 0 4px 20px rgba(88, 101, 242, 0.3); }
+    .btn-boosty:hover { border-color: var(--boosty-color); box-shadow: 0 4px 20px rgba(241, 95, 44, 0.3); }
+    .btn-donatty:hover { border-color: var(--donatty-color); box-shadow: 0 4px 20px rgba(168, 85, 247, 0.3); }
+    .btn-donationalerts:hover { border-color: var(--donationalerts-color); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3); }
+    .btn-fetta:hover { border-color: var(--fetta-color); box-shadow: 0 4px 20px rgba(236, 72, 153, 0.3); }
+    .btn-memes:hover { border-color: var(--memes-color); box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3); }
+
+    /* ==========================================================================
+       9. ПОДВАЛ
+       ========================================================================== */
+    .footer {
+      margin-top: 28px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      opacity: 0.6;
     }
   </style>
 </head>
 <body>
 
-<div class="card">
-  <div class="header">
-    <h1>Статус стримов</h1>
-    <div class="connection-status">
-      <div id="conn-dot" class="dot"></div>
-      <span id="conn-text">Подключение...</span>
-    </div>
+<!-- Задний фон -->
+<div class="bg-glow glow-1"></div>
+<div class="bg-glow glow-2"></div>
+
+<main class="card">
+  <!-- Аватарка -->
+  <div class="avatar-container">
+    <img src="avatar.jpg" alt="Avatar" class="avatar" onerror="this.src='https://via.placeholder.com/150'">
   </div>
 
-  <div class="status-list">
-    <div class="platform">
-      <span class="platform-name">Twitch</span>
-      <span id="twitch-status" class="badge offline">OFFLINE</span>
-    </div>
-    <div class="platform">
-      <span class="platform-name">YouTube</span>
-      <span id="youtube-status" class="badge offline">OFFLINE</span>
-    </div>
-    <div class="platform">
-      <span class="platform-name">VK Video</span>
-      <span id="vk-status" class="badge offline">OFFLINE</span>
-    </div>
-  </div>
-</div>
+  <!-- Заголовок -->
+  <h1 class="username">v1kusha</h1>
+  <p class="description">Все официальные ссылки и стримы</p>
 
+  <!-- Список ссылок -->
+  <div class="links">
+
+    <!-- СЕКЦИЯ 1: ОСНОВНЫЕ СТРИМЫ -->
+    <div class="section-title">
+      <span>Основные стримы</span>
+    </div>
+
+    <a href="https://twitch.tv/v1kusha" target="_blank" class="btn btn-twitch" id="btn-twitch">
+      <div class="icon-box"><i class="fa-brands fa-twitch"></i></div>
+      <span class="btn-text">TWITCH - ОСНОВНОЙ КАНАЛ ДЛЯ СТРИМОВ</span>
+      <span class="live-badge">LIVE</span>
+    </a>
+
+    <a href="https://youtube.com" target="_blank" class="btn btn-youtube" id="btn-youtube">
+      <div class="icon-box"><i class="fa-brands fa-youtube"></i></div>
+      <span class="btn-text">YOUTUBE - СТРИМЫ + ЗАПИСИ</span>
+      <span class="live-badge">LIVE</span>
+    </a>
+
+    <a href="https://vkplay.live/vikusha" target="_blank" class="btn btn-vk" id="btn-vk">
+      <div class="icon-box"><i class="fa-brands fa-vk"></i></div>
+      <span class="btn-text">VK VIDEO</span>
+      <span class="live-badge">LIVE</span>
+    </a>
+
+
+    <!-- СЕКЦИЯ 2: ПРОСМОТР ФИЛЬМОВ -->
+    <div class="section-title">
+      <span>Просмотр фильмов</span>
+    </div>
+
+    <a href="https://vkplay.live/vikusha" target="_blank" class="btn btn-vk">
+      <div class="icon-box"><i class="fa-brands fa-vk"></i></div>
+      <span class="btn-text">VK VIDEO</span>
+      <span class="live-badge">LIVE</span>
+    </a>
+
+    <a href="#" target="_blank" class="btn btn-kick">
+      <div class="icon-box"><i class="fa-solid fa-k"></i></div>
+      <span class="btn-text">KICK</span>
+      <span class="live-badge">LIVE</span>
+    </a>
+
+    <a href="#" target="_blank" class="btn btn-goodgame">
+      <div class="icon-box"><i class="fa-solid fa-gamepad"></i></div>
+      <span class="btn-text">GOODGAME</span>
+      <span class="live-badge">LIVE</span>
+    </a>
+
+
+    <!-- СЕКЦИЯ 3: СОЦ СЕТИ -->
+    <div class="section-title">
+      <span>Соц сети</span>
+    </div>
+
+    <a href="#" target="_blank" class="btn btn-telegram">
+      <div class="icon-box"><i class="fa-brands fa-telegram"></i></div>
+      <span class="btn-text">TELEGRAM - АНОНСЫ СТРИМОВ/ИНФО</span>
+    </a>
+
+    <a href="#" target="_blank" class="btn btn-discord">
+      <div class="icon-box"><i class="fa-brands fa-discord"></i></div>
+      <span class="btn-text">DISCORD - ОБЩЕНИЕ + ОПОВЕЩЕНИЯ</span>
+    </a>
+
+    <a href="#" target="_blank" class="btn btn-boosty">
+      <div class="icon-box"><i class="fa-solid fa-rocket"></i></div>
+      <span class="btn-text">BOOSTY - ЗАПИСИ СТРИМОВ + ФОТО</span>
+    </a>
+
+
+    <!-- СЕКЦИЯ 4: ПОДДЕРЖКА -->
+    <div class="section-title">
+      <span>Поддержка</span>
+    </div>
+
+    <a href="#" target="_blank" class="btn btn-donatty">
+      <div class="icon-box"><i class="fa-solid fa-credit-card"></i></div>
+      <span class="btn-text">DONATTY КОМИССИЯ 5%</span>
+    </a>
+
+    <a href="#" target="_blank" class="btn btn-donationalerts">
+      <div class="icon-box"><i class="fa-solid fa-heart"></i></div>
+      <span class="btn-text">DONATIONALERTS КОМИССИЯ 12%</span>
+    </a>
+
+    <a href="#" target="_blank" class="btn btn-fetta">
+      <div class="icon-box"><i class="fa-solid fa-gamepad"></i></div>
+      <span class="btn-text">ЗАКАЗ ИГР</span>
+    </a>
+
+    <a href="#" target="_blank" class="btn btn-fetta">
+      <div class="icon-box"><i class="fa-solid fa-gift"></i></div>
+      <span class="btn-text">ФЕТТА (ПОДАРКИ С ОПОВЕЩЕНИЯМИ)</span>
+    </a>
+
+    <a href="#" target="_blank" class="btn btn-memes">
+      <div class="icon-box"><i class="fa-solid fa-face-laugh-squint"></i></div>
+      <span class="btn-text">МЕМЫ</span>
+    </a>
+
+  </div>
+
+  <!-- Подвал -->
+  <footer class="footer">
+    <p>© 2026 SlaDikX. Все права защищены.</p>
+  </footer>
+</main>
+
+<!-- JS: Опрос бэкенда и индикация LIVE -->
 <script>
   const BACKEND_URL = "https://stream-links-backend-1061508657324.europe-west1.run.app";
 
-  const connDot = document.getElementById("conn-dot");
-  const connText = document.getElementById("conn-text");
-
-  // 1. Получение начального состояния при загрузке
-  async function fetchInitialStatus() {
+  async function checkStatuses() {
     try {
-      const res = await fetch(`${BACKEND_URL}/api/status`);
-      if (res.ok) {
-        const data = await res.json();
-        updateUI(data);
+      const response = await fetch(`${BACKEND_URL}/status`);
+      if (!response.ok) return;
+
+      const data = await response.json();
+
+      // Twitch
+      const twitchBtn = document.getElementById("btn-twitch");
+      if (twitchBtn) {
+        if (data.twitch === "online") twitchBtn.classList.add("btn-live");
+        else twitchBtn.classList.remove("btn-live");
       }
+
+      // YouTube
+      const youtubeBtn = document.getElementById("btn-youtube");
+      if (youtubeBtn) {
+        if (data.youtube === "online") youtubeBtn.classList.add("btn-live");
+        else youtubeBtn.classList.remove("btn-live");
+      }
+
+      // VK Video
+      const vkBtn = document.getElementById("btn-vk");
+      if (vkBtn) {
+        if (data.vk === "online") vkBtn.classList.add("btn-live");
+        else vkBtn.classList.remove("btn-live");
+      }
+
     } catch (err) {
-      console.error("Ошибка при получении начального статуса:", err);
+      console.error("Ошибка получения статусов:", err);
     }
   }
 
-  // 2. Подключение к SSE в реальном времени
-  function initSSE() {
-    const eventSource = new EventSource(`${BACKEND_URL}/api/stream-events`);
-
-    eventSource.onopen = () => {
-      connDot.className = "dot connected";
-      connText.textContent = "Онлайн";
-    };
-
-    eventSource.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        updateUI(data);
-      } catch (err) {
-        console.error("Ошибка разбора SSE сообщения:", err);
-      }
-    };
-
-    eventSource.onerror = (err) => {
-      console.error("Ошибка SSE соединения:", err);
-      connDot.className = "dot";
-      connText.textContent = "Переподключение...";
-    };
-  }
-
-  function updateUI(data) {
-    if (data.twitch !== undefined) updateBadge("twitch", data.twitch);
-    if (data.youtube !== undefined) updateBadge("youtube", data.youtube);
-    if (data.vk !== undefined) updateBadge("vk", data.vk);
-  }
-
-  function updateBadge(platform, isLive) {
-    const el = document.getElementById(`${platform}-status`);
-    if (!el) return;
-
-    if (isLive) {
-      el.textContent = "LIVE";
-      el.className = "badge live";
-    } else {
-      el.textContent = "OFFLINE";
-      el.className = "badge offline";
-    }
-  }
-
-  // Инициализация
-  fetchInitialStatus();
-  initSSE();
+  // Первичный опрос + повтор каждые 15 секунд
+  checkStatuses();
+  setInterval(checkStatuses, 15000);
 </script>
 </body>
 </html>
