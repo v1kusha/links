@@ -218,7 +218,7 @@
        7. ИНДИКАТОРЫ LIVE И ПОДСВЕТКА ПО ЦВЕТУ ПЛАТФОРМЫ
        ========================================================================== */
     .live-badge {
-      display: none; /* По умолчанию скрыт, включается через JS при LIVE */
+      display: none;
       position: absolute;
       right: 14px;
       color: #ffffff;
@@ -456,7 +456,7 @@
   </footer>
 </main>
 
-<!-- JS: Опрос бэкенда и индикация LIVE -->
+<!-- JS: Опрос бэкенда и динамическое включение плашки LIVE -->
 <script>
   const BACKEND_URL = "https://stream-links-backend-1061508657324.europe-west1.run.app";
 
@@ -493,7 +493,7 @@
     }
   }
 
-  // Первичный опрос + повтор каждые 15 секунд
+  // Запускаем проверку при открытии и обновляем каждые 15 секунд
   checkStatuses();
   setInterval(checkStatuses, 15000);
 </script>
