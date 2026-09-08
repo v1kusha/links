@@ -25,15 +25,18 @@
     }
 
     :root {
-      --bg-color: #0c0d12;
-      --card-bg: rgba(255, 255, 255, 0.03);
-      --card-border: rgba(255, 255, 255, 0.08);
+      --bg-color: #030408;
+      --card-bg: rgba(13, 15, 23, 0.65);
+      --card-border: rgba(255, 255, 255, 0.12);
       --text-primary: #ffffff;
-      --text-secondary: #9da4b0;
+      --text-secondary: #94a3b8;
+
+      /* Динамический цвет свечения (по умолчанию — фиолетовый) */
+      --avatar-glow: rgba(169, 112, 255, 0.85);
 
       /* Бренд-цвета платформ */
-      --twitch-color: #9146ff;
-      --youtube-color: #ff0000;
+      --twitch-color: #a970ff;
+      --youtube-color: #ff2a2a;
       --vk-color: #0077ff;
       --kick-color: #53fc18;
       --goodgame-color: #1a73e8;
@@ -59,28 +62,37 @@
     }
 
     /* ==========================================================================
-       2. СВЕТЯЩИЙСЯ ФОН
+       2. ИНТЕРАКТИВНЫЙ ФОН
        ========================================================================== */
-    .bg-glow {
-      position: absolute;
-      width: 350px;
-      height: 350px;
-      border-radius: 50%;
-      filter: blur(130px);
+    #particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       z-index: 0;
       pointer-events: none;
     }
 
-    .glow-1 {
-      background: rgba(145, 70, 255, 0.22);
-      top: 5%;
-      left: 10%;
+    .aurora-bg {
+      position: fixed;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 20% 20%, rgba(169, 112, 255, 0.18) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(0, 119, 255, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(83, 252, 24, 0.08) 0%, transparent 35%);
+      filter: blur(80px);
+      animation: auroraMove 22s ease-in-out infinite alternate;
     }
 
-    .glow-2 {
-      background: rgba(0, 119, 255, 0.18);
-      bottom: 5%;
-      right: 10%;
+    @keyframes auroraMove {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.15); }
+      100% { transform: rotate(360deg) scale(1); }
     }
 
     /* ==========================================================================
@@ -92,23 +104,42 @@
       width: 100%;
       max-width: 440px;
       background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
       border: 1px solid var(--card-border);
       border-radius: 28px;
       padding: 32px 20px;
       text-align: center;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8),
+      inset 0 1px 1px rgba(255, 255, 255, 0.15);
     }
 
     /* ==========================================================================
-       4. АВАТАР И ИНФО
+       4. АВАТАР И СИЯНИЕ
        ========================================================================== */
     .avatar-container {
       position: relative;
-      width: 100px;
-      height: 100px;
+      width: 104px;
+      height: 104px;
       margin: 0 auto 16px;
+    }
+
+    .avatar-container::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      background: var(--avatar-glow);
+      opacity: 0.85;
+      filter: blur(14px);
+      z-index: -1;
+      transition: background 0.8s ease;
+      animation: avatarPulse 3.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes avatarPulse {
+      0% { opacity: 0.6; transform: scale(0.96); }
+      100% { opacity: 1; transform: scale(1.06); }
     }
 
     .avatar {
@@ -116,8 +147,8 @@
       height: 100%;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     }
 
     .username {
@@ -125,6 +156,9 @@
       font-weight: 800;
       margin-bottom: 4px;
       letter-spacing: -0.5px;
+      background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .description {
@@ -167,55 +201,82 @@
     }
 
     /* ==========================================================================
-       6. КНОПКИ ССЫЛОК
+       6. КНОПКИ
        ========================================================================== */
     .btn {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 13px 18px;
+      padding: 12px 18px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--card-border);
       border-radius: 14px;
       color: var(--text-primary);
       text-decoration: none;
-      font-weight: 600;
-      font-size: 13px;
-      letter-spacing: 0.2px;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
       overflow: hidden;
     }
 
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      transition: 0.5s;
+      pointer-events: none;
+    }
+
+    .btn:hover::before { left: 100%; }
+
     .btn .icon-box {
       position: absolute;
-      left: 16px;
+      left: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
       width: 24px;
       height: 24px;
       font-size: 18px;
-      transition: transform 0.25s ease;
+      transition: transform 0.3s ease;
     }
 
-    .btn span.btn-text {
-      padding: 0 30px;
+    .btn-text-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
+      padding: 0 35px;
+    }
+
+    .btn-title {
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    .btn-subtitle {
+      font-weight: 500;
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      margin-top: 3px;
+      opacity: 0.85;
     }
 
     .btn:hover {
       transform: translateY(-2px);
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.25);
     }
 
-    .btn:hover .icon-box {
-      transform: scale(1.15);
-    }
+    .btn:hover .icon-box { transform: scale(1.18); }
 
     /* ==========================================================================
-       7. ИНДИКАТОРЫ LIVE И ПОДСВЕТКА ПО ЦВЕТУ ПЛАТФОРМЫ
+       7. ИНДИКАТОРЫ LIVE И HOVER
        ========================================================================== */
     .live-badge {
       display: none;
@@ -230,98 +291,40 @@
       text-transform: uppercase;
     }
 
-    /* Анимация пульсации плашки */
     @keyframes pulse {
       0% { box-shadow: 0 0 0 0 var(--badge-glow); }
-      70% { box-shadow: 0 0 0 6px rgba(0, 0, 0, 0); }
+      70% { box-shadow: 0 0 0 7px rgba(0, 0, 0, 0); }
       100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
     }
 
-    /* Twitch - LIVE */
-    .btn-twitch.btn-live {
-      border-color: rgba(145, 70, 255, 0.6) !important;
-      background: rgba(145, 70, 255, 0.12) !important;
-      box-shadow: 0 0 15px rgba(145, 70, 255, 0.25);
-    }
-    .btn-twitch.btn-live .live-badge {
-      display: inline-block;
-      background: var(--twitch-color);
-      --badge-glow: rgba(145, 70, 255, 0.7);
-      animation: pulse 2s infinite;
-    }
+    .btn-twitch.btn-live { border-color: rgba(169, 112, 255, 0.6) !important; background: rgba(169, 112, 255, 0.12) !important; box-shadow: 0 0 20px rgba(169, 112, 255, 0.3); }
+    .btn-twitch.btn-live .live-badge { display: inline-block; background: var(--twitch-color); --badge-glow: rgba(169, 112, 255, 0.8); animation: pulse 2s infinite; }
 
-    /* YouTube - LIVE */
-    .btn-youtube.btn-live {
-      border-color: rgba(255, 0, 0, 0.6) !important;
-      background: rgba(255, 0, 0, 0.12) !important;
-      box-shadow: 0 0 15px rgba(255, 0, 0, 0.25);
-    }
-    .btn-youtube.btn-live .live-badge {
-      display: inline-block;
-      background: var(--youtube-color);
-      --badge-glow: rgba(255, 0, 0, 0.7);
-      animation: pulse 2s infinite;
-    }
+    .btn-youtube.btn-live { border-color: rgba(255, 42, 42, 0.6) !important; background: rgba(255, 42, 42, 0.12) !important; box-shadow: 0 0 20px rgba(255, 42, 42, 0.3); }
+    .btn-youtube.btn-live .live-badge { display: inline-block; background: var(--youtube-color); --badge-glow: rgba(255, 42, 42, 0.8); animation: pulse 2s infinite; }
 
-    /* VK Video - LIVE */
-    .btn-vk.btn-live {
-      border-color: rgba(0, 119, 255, 0.6) !important;
-      background: rgba(0, 119, 255, 0.12) !important;
-      box-shadow: 0 0 15px rgba(0, 119, 255, 0.25);
-    }
-    .btn-vk.btn-live .live-badge {
-      display: inline-block;
-      background: var(--vk-color);
-      --badge-glow: rgba(0, 119, 255, 0.7);
-      animation: pulse 2s infinite;
-    }
+    .btn-vk.btn-live { border-color: rgba(0, 119, 255, 0.6) !important; background: rgba(0, 119, 255, 0.12) !important; box-shadow: 0 0 20px rgba(0, 119, 255, 0.3); }
+    .btn-vk.btn-live .live-badge { display: inline-block; background: var(--vk-color); --badge-glow: rgba(0, 119, 255, 0.8); animation: pulse 2s infinite; }
 
-    /* Kick - LIVE */
-    .btn-kick.btn-live {
-      border-color: rgba(83, 252, 24, 0.6) !important;
-      background: rgba(83, 252, 24, 0.12) !important;
-      box-shadow: 0 0 15px rgba(83, 252, 24, 0.25);
-    }
-    .btn-kick.btn-live .live-badge {
-      display: inline-block;
-      background: var(--kick-color);
-      color: #000000;
-      --badge-glow: rgba(83, 252, 24, 0.7);
-      animation: pulse 2s infinite;
-    }
+    .btn-kick.btn-live { border-color: rgba(83, 252, 24, 0.6) !important; background: rgba(83, 252, 24, 0.12) !important; box-shadow: 0 0 20px rgba(83, 252, 24, 0.3); }
+    .btn-kick.btn-live .live-badge { display: inline-block; background: var(--kick-color); color: #000; --badge-glow: rgba(83, 252, 24, 0.8); animation: pulse 2s infinite; }
 
-    /* GoodGame - LIVE */
-    .btn-goodgame.btn-live {
-      border-color: rgba(26, 115, 232, 0.6) !important;
-      background: rgba(26, 115, 232, 0.12) !important;
-      box-shadow: 0 0 15px rgba(26, 115, 232, 0.25);
-    }
-    .btn-goodgame.btn-live .live-badge {
-      display: inline-block;
-      background: var(--goodgame-color);
-      --badge-glow: rgba(26, 115, 232, 0.7);
-      animation: pulse 2s infinite;
-    }
+    .btn-goodgame.btn-live { border-color: rgba(26, 115, 232, 0.6) !important; background: rgba(26, 115, 232, 0.12) !important; box-shadow: 0 0 20px rgba(26, 115, 232, 0.3); }
+    .btn-goodgame.btn-live .live-badge { display: inline-block; background: var(--goodgame-color); --badge-glow: rgba(26, 115, 232, 0.8); animation: pulse 2s infinite; }
 
-    /* ==========================================================================
-       8. ЦВЕТА ПРИ НАВЕДЕНИИ МЫШИ (HOVER)
-       ========================================================================== */
-    .btn-vk:hover { border-color: var(--vk-color); box-shadow: 0 4px 20px rgba(0, 119, 255, 0.3); }
-    .btn-kick:hover { border-color: var(--kick-color); box-shadow: 0 4px 20px rgba(83, 252, 24, 0.25); }
-    .btn-goodgame:hover { border-color: var(--goodgame-color); box-shadow: 0 4px 20px rgba(26, 115, 232, 0.3); }
-    .btn-twitch:hover { border-color: var(--twitch-color); box-shadow: 0 4px 20px rgba(145, 70, 255, 0.3); }
-    .btn-youtube:hover { border-color: var(--youtube-color); box-shadow: 0 4px 20px rgba(255, 0, 0, 0.3); }
-    .btn-telegram:hover { border-color: var(--telegram-color); box-shadow: 0 4px 20px rgba(36, 161, 222, 0.3); }
-    .btn-discord:hover { border-color: var(--discord-color); box-shadow: 0 4px 20px rgba(88, 101, 242, 0.3); }
-    .btn-boosty:hover { border-color: var(--boosty-color); box-shadow: 0 4px 20px rgba(241, 95, 44, 0.3); }
-    .btn-donatty:hover { border-color: var(--donatty-color); box-shadow: 0 4px 20px rgba(168, 85, 247, 0.3); }
-    .btn-donationalerts:hover { border-color: var(--donationalerts-color); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3); }
-    .btn-fetta:hover { border-color: var(--fetta-color); box-shadow: 0 4px 20px rgba(236, 72, 153, 0.3); }
-    .btn-memes:hover { border-color: var(--memes-color); box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3); }
+    .btn-twitch:hover { border-color: var(--twitch-color); box-shadow: 0 4px 20px rgba(169, 112, 255, 0.35); }
+    .btn-youtube:hover { border-color: var(--youtube-color); box-shadow: 0 4px 20px rgba(255, 42, 42, 0.35); }
+    .btn-vk:hover { border-color: var(--vk-color); box-shadow: 0 4px 20px rgba(0, 119, 255, 0.35); }
+    .btn-kick:hover { border-color: var(--kick-color); box-shadow: 0 4px 20px rgba(83, 252, 24, 0.3); }
+    .btn-goodgame:hover { border-color: var(--goodgame-color); box-shadow: 0 4px 20px rgba(26, 115, 232, 0.35); }
+    .btn-telegram:hover { border-color: var(--telegram-color); box-shadow: 0 4px 20px rgba(36, 161, 222, 0.35); }
+    .btn-discord:hover { border-color: var(--discord-color); box-shadow: 0 4px 20px rgba(88, 101, 242, 0.35); }
+    .btn-boosty:hover { border-color: var(--boosty-color); box-shadow: 0 4px 20px rgba(241, 95, 44, 0.35); }
+    .btn-donatty:hover { border-color: var(--donatty-color); box-shadow: 0 4px 20px rgba(168, 85, 247, 0.35); }
+    .btn-donationalerts:hover { border-color: var(--donationalerts-color); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.35); }
+    .btn-fetta:hover { border-color: var(--fetta-color); box-shadow: 0 4px 20px rgba(236, 72, 153, 0.35); }
+    .btn-memes:hover { border-color: var(--memes-color); box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35); }
 
-    /* ==========================================================================
-       9. ПОДВАЛ
-       ========================================================================== */
     .footer {
       margin-top: 28px;
       font-size: 11px;
@@ -332,131 +335,282 @@
 </head>
 <body>
 
-<!-- Задний фон -->
-<div class="bg-glow glow-1"></div>
-<div class="bg-glow glow-2"></div>
+<div class="aurora-bg"></div>
+<canvas id="particle-canvas"></canvas>
 
 <main class="card">
-  <!-- Аватарка -->
+  <!-- Аватарка (с обработкой ошибок загрузки) -->
   <div class="avatar-container">
-    <img src="avatar.jpg" alt="Avatar" class="avatar" onerror="this.src='https://via.placeholder.com/150'">
+    <img id="avatar-img" src="avatar.jpg" alt="Avatar" class="avatar" id="avatar-img">
   </div>
 
-  <!-- Заголовок -->
   <h1 class="username">v1kusha</h1>
   <p class="description">Все официальные ссылки и стримы</p>
 
-  <!-- Список ссылок -->
   <div class="links">
+    <!-- СЕКЦИЯ 1: ПРЯМЫЕ ЭФИРЫ -->
+    <div class="section-title"><span>Прямые эфиры</span></div>
 
-    <!-- СЕКЦИЯ 1: ОСНОВНЫЕ СТРИМЫ -->
-    <div class="section-title">
-      <span>Основные стримы</span>
-    </div>
-
-    <a href="https://twitch.tv/v1kusha" target="_blank" class="btn btn-twitch" id="btn-twitch">
+    <a href="https://www.twitch.tv/v1kusha" target="_blank" class="btn btn-twitch" id="btn-twitch">
       <div class="icon-box"><i class="fa-brands fa-twitch"></i></div>
-      <span class="btn-text">TWITCH - ОСНОВНОЙ КАНАЛ ДЛЯ СТРИМОВ</span>
+      <div class="btn-text-group">
+        <span class="btn-title">TWITCH</span>
+        <span class="btn-subtitle">Основной канал</span>
+      </div>
       <span class="live-badge">LIVE</span>
     </a>
 
-    <a href="https://youtube.com" target="_blank" class="btn btn-youtube" id="btn-youtube">
+    <a href="https://www.youtube.com/@v1kusha_games" target="_blank" class="btn btn-youtube" id="btn-youtube">
       <div class="icon-box"><i class="fa-brands fa-youtube"></i></div>
-      <span class="btn-text">YOUTUBE - СТРИМЫ + ЗАПИСИ</span>
+      <div class="btn-text-group">
+        <span class="btn-title">YOUTUBE</span>
+        <span class="btn-subtitle">Стримы • Записи стримов</span>
+      </div>
       <span class="live-badge">LIVE</span>
     </a>
 
     <a href="https://vkplay.live/vikusha" target="_blank" class="btn btn-vk" id="btn-vk">
       <div class="icon-box"><i class="fa-brands fa-vk"></i></div>
-      <span class="btn-text">VK VIDEO</span>
+      <div class="btn-text-group">
+        <span class="btn-title">VK VIDEO</span>
+        <span class="btn-subtitle">Стримы • Записи • Фильмы</span>
+      </div>
       <span class="live-badge">LIVE</span>
     </a>
 
-
-    <!-- СЕКЦИЯ 2: ПРОСМОТР ФИЛЬМОВ -->
-    <div class="section-title">
-      <span>Просмотр фильмов</span>
-    </div>
-
-    <a href="https://vkplay.live/vikusha" target="_blank" class="btn btn-vk">
-      <div class="icon-box"><i class="fa-brands fa-vk"></i></div>
-      <span class="btn-text">VK VIDEO</span>
-      <span class="live-badge">LIVE</span>
-    </a>
-
-    <a href="#" target="_blank" class="btn btn-kick">
+    <a href="#" target="_blank" class="btn btn-kick" id="btn-kick">
       <div class="icon-box"><i class="fa-solid fa-k"></i></div>
-      <span class="btn-text">KICK</span>
+      <div class="btn-text-group">
+        <span class="btn-title">KICK</span>
+        <span class="btn-subtitle">Фильмы</span>
+      </div>
       <span class="live-badge">LIVE</span>
     </a>
 
-    <a href="#" target="_blank" class="btn btn-goodgame">
+    <a href="https://goodgame.ru/v1kusha" target="_blank" class="btn btn-goodgame" id="btn-goodgame">
       <div class="icon-box"><i class="fa-solid fa-gamepad"></i></div>
-      <span class="btn-text">GOODGAME</span>
+      <div class="btn-text-group">
+        <span class="btn-title">GOODGAME</span>
+        <span class="btn-subtitle">Фильмы</span>
+      </div>
       <span class="live-badge">LIVE</span>
     </a>
 
+    <!-- СЕКЦИЯ 2: СОЦ СЕТИ -->
+    <div class="section-title"><span>Соц сети</span></div>
 
-    <!-- СЕКЦИЯ 3: СОЦ СЕТИ -->
-    <div class="section-title">
-      <span>Соц сети</span>
-    </div>
-
-    <a href="#" target="_blank" class="btn btn-telegram">
+    <a href="https://t.me/v1kusha_games" target="_blank" class="btn btn-telegram">
       <div class="icon-box"><i class="fa-brands fa-telegram"></i></div>
-      <span class="btn-text">TELEGRAM - АНОНСЫ СТРИМОВ/ИНФО</span>
+      <div class="btn-text-group">
+        <span class="btn-title">TELEGRAM</span>
+        <span class="btn-subtitle">Анонсы стримов и инфо</span>
+      </div>
     </a>
 
-    <a href="#" target="_blank" class="btn btn-discord">
+    <a href="https://discord.gg/ZndFUPJ8wf" target="_blank" class="btn btn-discord">
       <div class="icon-box"><i class="fa-brands fa-discord"></i></div>
-      <span class="btn-text">DISCORD - ОБЩЕНИЕ + ОПОВЕЩЕНИЯ</span>
+      <div class="btn-text-group">
+        <span class="btn-title">DISCORD</span>
+        <span class="btn-subtitle">Общение и оповещения</span>
+      </div>
     </a>
 
-    <a href="#" target="_blank" class="btn btn-boosty">
-      <div class="icon-box"><i class="fa-solid fa-rocket"></i></div>
-      <span class="btn-text">BOOSTY - ЗАПИСИ СТРИМОВ + ФОТО</span>
+    <a href="https://boosty.to/v1kusha" target="_blank" class="btn btn-boosty">
+      <div class="icon-box"><i class="fa-solid fa-bolt"></i></div>
+      <div class="btn-text-group">
+        <span class="btn-title">BOOSTY</span>
+        <span class="btn-subtitle">Записи стримов и эксклюзив</span>
+      </div>
     </a>
 
+    <!-- СЕКЦИЯ 3: ПОДДЕРЖКА -->
+    <div class="section-title"><span>Поддержка</span></div>
 
-    <!-- СЕКЦИЯ 4: ПОДДЕРЖКА -->
-    <div class="section-title">
-      <span>Поддержка</span>
-    </div>
-
-    <a href="#" target="_blank" class="btn btn-donatty">
+    <a href="https://donatty.com/v1kusha" target="_blank" class="btn btn-donatty">
       <div class="icon-box"><i class="fa-solid fa-credit-card"></i></div>
-      <span class="btn-text">DONATTY КОМИССИЯ 5%</span>
+      <div class="btn-text-group">
+        <span class="btn-title">DONATTY</span>
+        <span class="btn-subtitle">Комиссия 5%</span>
+      </div>
     </a>
 
-    <a href="#" target="_blank" class="btn btn-donationalerts">
+    <a href="https://www.donationalerts.com/r/v1kusha" target="_blank" class="btn btn-donationalerts">
       <div class="icon-box"><i class="fa-solid fa-heart"></i></div>
-      <span class="btn-text">DONATIONALERTS КОМИССИЯ 12%</span>
+      <div class="btn-text-group">
+        <span class="btn-title">DONATIONALERTS</span>
+        <span class="btn-subtitle">Комиссия 12%</span>
+      </div>
     </a>
 
-    <a href="#" target="_blank" class="btn btn-fetta">
+    <a href="https://docs.google.com/document/d/1F1d-Hu5SMR6u2r4Vte3q7_sGaOZY4BKzil7ptaf-djo/edit?tab=t.0" target="_blank" class="btn btn-fetta">
       <div class="icon-box"><i class="fa-solid fa-gamepad"></i></div>
-      <span class="btn-text">ЗАКАЗ ИГР</span>
+      <div class="btn-text-group">
+        <span class="btn-title">ЗАКАЗ ИГР</span>
+        <span class="btn-subtitle">Таблица и правила</span>
+      </div>
     </a>
 
-    <a href="#" target="_blank" class="btn btn-fetta">
+    <a href="https://fetta.app/u/v1kusha" target="_blank" class="btn btn-fetta">
       <div class="icon-box"><i class="fa-solid fa-gift"></i></div>
-      <span class="btn-text">ФЕТТА (ПОДАРКИ С ОПОВЕЩЕНИЯМИ)</span>
+      <div class="btn-text-group">
+        <span class="btn-title">ФЕТТА</span>
+        <span class="btn-subtitle">Заказ игр и подарков</span>
+      </div>
     </a>
 
-    <a href="#" target="_blank" class="btn btn-memes">
+    <a href="https://memealerts.com/v1kusha" target="_blank" class="btn btn-memes">
       <div class="icon-box"><i class="fa-solid fa-face-laugh-squint"></i></div>
-      <span class="btn-text">МЕМЫ</span>
+      <div class="btn-text-group">
+        <span class="btn-title">МЕМЫ</span>
+        <span class="btn-subtitle">Заказ мемов на стрим</span>
+      </div>
     </a>
-
   </div>
 
-  <!-- Подвал -->
   <footer class="footer">
     <p>© 2026 SlaDikX. Все права защищены.</p>
   </footer>
 </main>
 
-<!-- JS: Опрос бэкенда и динамическое включение плашки LIVE -->
+<!-- JS 1: Динамическое определение цвета фото и обработка ошибок -->
+<script>
+  const img = document.getElementById('avatar-img');
+
+  // Если локальный файл avatar.jpg не найден, ставим заглушку
+  img.onerror = function() {
+    this.onerror = null;
+    this.src = 'https://picsum.photos/200'; // Временная красивая аватарка
+  };
+
+  function setAvatarGlowColor() {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 50;
+    canvas.height = 50;
+
+    try {
+      ctx.drawImage(img, 0, 0, 50, 50);
+      const data = ctx.getImageData(0, 0, 50, 50).data;
+
+      let r = 0, g = 0, b = 0, count = 0;
+
+      for (let i = 0; i < data.length; i += 4) {
+        // Игнорируем слишком тёмные оттенки
+        if (data[i] + data[i + 1] + data[i + 2] > 60) {
+          r += data[i];
+          g += data[i + 1];
+          b += data[i + 2];
+          count++;
+        }
+      }
+
+      if (count > 0) {
+        r = Math.round(r / count);
+        g = Math.round(g / count);
+        b = Math.round(b / count);
+
+        document.documentElement.style.setProperty('--avatar-glow', `rgba(${r}, ${g}, ${b}, 0.85)`);
+      }
+    } catch (e) {
+      // Если браузер заблокировал считывание цвета из-за локального файла, останется стандартный красивый цвет
+    }
+  }
+
+  if (img.complete) {
+    setAvatarGlowColor();
+  } else {
+    img.addEventListener('load', setAvatarGlowColor);
+  }
+</script>
+
+<!-- JS 2: Интерактивный фон (Canvas частицы + созвездия) -->
+<script>
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+
+  let mouse = { x: null, y: null, radius: 140 };
+
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.x;
+    mouse.y = e.y;
+  });
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const particleCount = Math.min(Math.floor(window.innerWidth / 18), 65);
+  const particles = [];
+  const colors = ['rgba(169, 112, 255, ', 'rgba(0, 119, 255, ', 'rgba(236, 72, 153, ', 'rgba(255, 255, 255, '];
+
+  for (let i = 0; i < particleCount; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 2 + 1,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: (Math.random() - 0.5) * 0.5,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      baseAlpha: Math.random() * 0.5 + 0.25
+    });
+  }
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach((p, index) => {
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + p.baseAlpha + ')';
+      ctx.fill();
+
+      for (let j = index + 1; j < particles.length; j++) {
+        const p2 = particles[j];
+        const dx = p.x - p2.x;
+        const dy = p.y - p2.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < 110) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `rgba(160, 168, 200, ${0.12 * (1 - dist / 110)})`;
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
+        }
+      }
+
+      if (mouse.x !== null) {
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < mouse.radius) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(mouse.x, mouse.y);
+          ctx.strokeStyle = `rgba(255, 255, 255, ${0.25 * (1 - dist / mouse.radius)})`;
+          ctx.lineWidth = 0.8;
+          ctx.stroke();
+        }
+      }
+    });
+
+    requestAnimationFrame(animateParticles);
+  }
+
+  animateParticles();
+</script>
+
+<!-- JS 3: Опрос бэкенда и переключение бейджей LIVE -->
 <script>
   const BACKEND_URL = "https://stream-links-backend-1061508657324.europe-west1.run.app";
 
@@ -466,34 +620,23 @@
       if (!response.ok) return;
 
       const data = await response.json();
+      const platforms = ['twitch', 'youtube', 'vk', 'kick', 'goodgame'];
 
-      // Twitch
-      const twitchBtn = document.getElementById("btn-twitch");
-      if (twitchBtn) {
-        if (data.twitch === "online") twitchBtn.classList.add("btn-live");
-        else twitchBtn.classList.remove("btn-live");
-      }
-
-      // YouTube
-      const youtubeBtn = document.getElementById("btn-youtube");
-      if (youtubeBtn) {
-        if (data.youtube === "online") youtubeBtn.classList.add("btn-live");
-        else youtubeBtn.classList.remove("btn-live");
-      }
-
-      // VK Video
-      const vkBtn = document.getElementById("btn-vk");
-      if (vkBtn) {
-        if (data.vk === "online") vkBtn.classList.add("btn-live");
-        else vkBtn.classList.remove("btn-live");
-      }
-
+      platforms.forEach(platform => {
+        const btn = document.getElementById(`btn-${platform}`);
+        if (btn) {
+          if (data[platform] === "online") {
+            btn.classList.add("btn-live");
+          } else {
+            btn.classList.remove("btn-live");
+          }
+        }
+      });
     } catch (err) {
       console.error("Ошибка получения статусов:", err);
     }
   }
 
-  // Запускаем проверку при открытии и обновляем каждые 15 секунд
   checkStatuses();
   setInterval(checkStatuses, 15000);
 </script>
