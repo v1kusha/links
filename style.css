@@ -1,11 +1,10 @@
 /* ==========================================================================
-   1. СБРОС СТИЛЕЙ И ПЕРЕМЕННЫЕ
+   1. БАЗОВЫЕ СТИЛИ
    ========================================================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
 }
 
 :root {
@@ -15,18 +14,8 @@
     --text-primary: #ffffff;
     --text-secondary: #94a3b8;
     --avatar-glow: rgba(169, 112, 255, 0.85);
-    --twitch-color: #a970ff;
-    --youtube-color: #ff2a2a;
-    --vk-color: #0077ff;
-    --kick-color: #53fc18;
-    --goodgame-color: #4371a5;
-    --telegram-color: #24a1de;
-    --discord-color: #5865f2;
-    --boosty-color: #f15f2c;
-    --donatty-color: #a855f7;
-    --donationalerts-color: #f59e0b;
-    --fetta-color: #ec4899;
-    --memes-color: #facc15;
+    --hover-bg: 0.20;
+    --hover-glow: 0.40;
 }
 
 body {
@@ -39,12 +28,12 @@ body {
     padding: 24px 16px;
     position: relative;
     overflow-x: hidden;
+    font-family: 'Inter', sans-serif;
 }
 
 #particle-canvas {
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     z-index: 0;
@@ -178,7 +167,7 @@ body {
     display: flex;
     align-items: center;
     text-align: center;
-    margin: 22px 0 10px 0;
+    margin: 22px 0 10px;
     color: var(--text-secondary);
     font-size: 11px;
     font-weight: 700;
@@ -209,9 +198,11 @@ body {
 }
 
 /* ==========================================================================
-   3. КНОПКИ
+   3. КНОПКИ И ЦВЕТА
    ========================================================================== */
 .btn {
+    --live-accent: var(--accent);
+    --live-rgb: var(--accent-rgb);
     position: relative;
     display: flex;
     align-items: center;
@@ -227,6 +218,76 @@ body {
     isolation: isolate;
 }
 
+.btn-twitch {
+    --accent: #a970ff;
+    --accent-rgb: 169, 112, 255;
+}
+
+.btn-youtube {
+    --accent: #ff2a2a;
+    --accent-rgb: 255, 42, 42;
+}
+
+.btn-vk {
+    --accent: #0077ff;
+    --accent-rgb: 0, 119, 255;
+}
+
+.btn-kick {
+    --accent: #53fc18;
+    --accent-rgb: 83, 252, 24;
+}
+
+.btn-goodgame {
+    --accent: #5b8fc9;
+    --accent-rgb: 91, 143, 201;
+    --hover-glow-local: 0.80;
+    --live-accent: #4371a5;
+    --live-rgb: 67, 113, 165;
+}
+
+.btn-order {
+    --accent: #00f2fe;
+    --accent-rgb: 0, 242, 254;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-telegram {
+    --accent: #24a1de;
+    --accent-rgb: 36, 161, 222;
+}
+
+.btn-discord {
+    --accent: #5865f2;
+    --accent-rgb: 88, 101, 242;
+}
+
+.btn-donatty {
+    --accent: #a855f7;
+    --accent-rgb: 168, 85, 247;
+}
+
+.btn-donationalerts {
+    --accent: #f59e0b;
+    --accent-rgb: 245, 158, 11;
+}
+
+.btn-fetta {
+    --accent: #ec4899;
+    --accent-rgb: 236, 72, 153;
+}
+
+.btn-boosty {
+    --accent: #f15f2c;
+    --accent-rgb: 241, 95, 44;
+}
+
+.btn-memes {
+    --accent: #facc15;
+    --accent-rgb: 250, 204, 21;
+}
+
 .btn::before {
     content: '';
     position: absolute;
@@ -235,13 +296,24 @@ body {
     width: 60%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
-    transition: 0.5s;
+    transition: left 0.5s ease;
     pointer-events: none;
     z-index: 1;
 }
 
+.btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    background: rgba(var(--accent-rgb), var(--hover-bg));
+    box-shadow: 0 0 20px rgba(var(--accent-rgb), var(--hover-glow-local, var(--hover-glow)));
+}
+
 .btn:hover::before {
     left: 100%;
+}
+
+.btn-order:hover {
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.20), rgba(79, 172, 254, 0.20));
 }
 
 .btn .icon-box {
@@ -258,17 +330,21 @@ body {
     transition: transform 0.3s ease, color 0.3s ease, opacity 0.3s ease;
 }
 
-.btn .icon-box .icon-img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
+.btn:hover .icon-box {
+    transform: scale(1.15);
+    color: var(--accent);
+    opacity: 1;
 }
 
+.btn .icon-box .icon-img,
 .btn .icon-box svg {
     width: 100%;
     height: 100%;
     display: block;
+}
+
+.btn .icon-box .icon-img {
+    object-fit: contain;
 }
 
 .btn-text-group {
@@ -287,7 +363,6 @@ body {
     letter-spacing: 0.5px;
     line-height: 1.2;
     color: #ffffff;
-    transition: color 0.3s ease;
 }
 
 .btn-subtitle {
@@ -299,17 +374,13 @@ body {
     transition: color 0.3s ease, opacity 0.3s ease;
 }
 
-.btn:hover {
-    transform: translateY(-2px);
-}
-
-.btn:hover .icon-box {
-    transform: scale(1.15);
+.btn:hover .btn-subtitle {
+    color: var(--accent);
     opacity: 1;
 }
 
 /* ==========================================================================
-   4. ЛЕТАЮЩИЕ СИМВОЛЫ В КНОПКАХ
+   4. ЛЕТАЮЩИЕ СИМВОЛЫ
    ========================================================================== */
 .button-symbol-fx {
     position: absolute;
@@ -329,7 +400,7 @@ body {
     opacity: 0;
     user-select: none;
     pointer-events: none;
-    color: var(--fx-color);
+    color: var(--accent);
     filter: blur(1px);
     text-shadow: 0 0 12px currentColor;
     will-change: transform, opacity;
@@ -348,14 +419,9 @@ body {
     fill: currentColor;
 }
 
-.button-fx-symbol.heart {
-    font-family: Arial, sans-serif;
-    font-size: 20px;
-}
-
+.button-fx-symbol.heart,
 .button-fx-symbol.dollar {
     font-family: Arial, sans-serif;
-    font-size: 21px;
 }
 
 @keyframes buttonSymbolFloat {
@@ -368,256 +434,7 @@ body {
 }
 
 /* ==========================================================================
-   ЯРКАЯ ПОДСВЕТКА ПЛОЩАДОК
-   ========================================================================== */
-
-/* Twitch */
-.btn-twitch:hover {
-    border-color: #a970ff;
-    background: rgba(169, 112, 255, 0.20);
-    box-shadow: 0 0 20px rgba(169, 112, 255, 0.40);
-}
-
-.btn-twitch:hover .icon-box {
-    color: var(--twitch-color);
-}
-
-.btn-twitch:hover .btn-subtitle {
-    color: var(--twitch-color);
-    opacity: 1;
-}
-
-/* YouTube */
-.btn-youtube:hover {
-    border-color: #ff2a2a;
-    background: rgba(255, 42, 42, 0.20);
-    box-shadow: 0 0 20px rgba(255, 42, 42, 0.40);
-}
-
-.btn-youtube:hover .icon-box {
-    color: var(--youtube-color);
-}
-
-.btn-youtube:hover .btn-subtitle {
-    color: var(--youtube-color);
-    opacity: 1;
-}
-
-/* VK */
-.btn-vk:hover {
-    border-color: #0077ff;
-    background: rgba(0, 119, 255, 0.20);
-    box-shadow: 0 0 20px rgba(0, 119, 255, 0.40);
-}
-
-.btn-vk:hover .icon-box {
-    color: var(--vk-color);
-}
-
-.btn-vk:hover .btn-subtitle {
-    color: var(--vk-color);
-    opacity: 1;
-}
-
-/* Kick */
-.btn-kick:hover {
-    border-color: #53fc18;
-    background: rgba(83, 252, 24, 0.20);
-    box-shadow: 0 0 20px rgba(83, 252, 24, 0.40);
-}
-
-.btn-kick:hover .icon-box {
-    color: var(--kick-color);
-}
-
-.btn-kick:hover .btn-subtitle {
-    color: var(--kick-color);
-    opacity: 1;
-}
-
-/* GoodGame */
-.btn-goodgame:hover {
-    border-color: #5b8fc9;
-    background: rgba(91, 143, 201, 0.20);
-    box-shadow: 0 0 20px rgba(91, 143, 201, 0.80);
-}
-
-.btn-goodgame:hover .icon-box {
-    color: #5b8fc9;
-}
-
-.btn-goodgame:hover .btn-subtitle {
-    color: #5b8fc9;
-    opacity: 1;
-}
-
-/* Telegram */
-.btn-telegram:hover {
-    border-color: #24a1de;
-    background: rgba(36, 161, 222, 0.20);
-    box-shadow: 0 0 20px rgba(36, 161, 222, 0.40);
-}
-
-.btn-telegram:hover .icon-box {
-    color: var(--telegram-color);
-}
-
-.btn-telegram:hover .btn-subtitle {
-    color: var(--telegram-color);
-    opacity: 1;
-}
-
-/* Discord */
-.btn-discord:hover {
-    border-color: #5865f2;
-    background: rgba(88, 101, 242, 0.20);
-    box-shadow: 0 0 20px rgba(88, 101, 242, 0.40);
-}
-
-.btn-discord:hover .icon-box {
-    color: var(--discord-color);
-}
-
-.btn-discord:hover .btn-subtitle {
-    color: var(--discord-color);
-    opacity: 1;
-}
-
-/* Donatty */
-.btn-donatty:hover {
-    border-color: #a855f7;
-    background: rgba(168, 85, 247, 0.20);
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.40);
-}
-
-.btn-donatty:hover .icon-box {
-    color: var(--donatty-color);
-}
-
-.btn-donatty:hover .btn-subtitle {
-    color: var(--donatty-color);
-    opacity: 1;
-}
-
-/* DonationAlerts */
-.btn-donationalerts:hover {
-    border-color: #f59e0b;
-    background: rgba(245, 158, 11, 0.20);
-    box-shadow: 0 0 20px rgba(245, 158, 11, 0.40);
-}
-
-.btn-donationalerts:hover .icon-box {
-    color: var(--donationalerts-color);
-}
-
-.btn-donationalerts:hover .btn-subtitle {
-    color: var(--donationalerts-color);
-    opacity: 1;
-}
-
-/* Fetta */
-.btn-fetta:hover {
-    border-color: #ec4899;
-    background: rgba(236, 72, 153, 0.20);
-    box-shadow: 0 0 20px rgba(236, 72, 153, 0.40);
-}
-
-.btn-fetta:hover .icon-box {
-    color: var(--fetta-color);
-}
-
-.btn-fetta:hover .btn-subtitle {
-    color: var(--fetta-color);
-    opacity: 1;
-}
-
-/* Boosty */
-.btn-boosty:hover {
-    border-color: #f15f2c;
-    background: rgba(241, 95, 44, 0.20);
-    box-shadow: 0 0 20px rgba(241, 95, 44, 0.40);
-}
-
-.btn-boosty:hover .icon-box {
-    color: var(--boosty-color);
-}
-
-.btn-boosty:hover .btn-subtitle {
-    color: var(--boosty-color);
-    opacity: 1;
-}
-
-/* Meme Alerts */
-.btn-memes:hover {
-    border-color: #facc15;
-    background: rgba(250, 204, 21, 0.20);
-    box-shadow: 0 0 20px rgba(250, 204, 21, 0.40);
-}
-
-.btn-memes:hover .icon-box {
-    color: var(--memes-color);
-}
-
-.btn-memes:hover .btn-subtitle {
-    color: var(--memes-color);
-    opacity: 1;
-}
-
-/* ==========================================================================
-   6. БЛОК ПОДДЕРЖКИ
-   ========================================================================== */
-.support-zone {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 0;
-    margin: 0;
-    border-radius: 14px;
-}
-
-.support-fx {
-    display: none;
-}
-
-/* ==========================================================================
-   7. ЗАКАЗ ИГР
-   ========================================================================== */
-.btn-order {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    transition: all 0.3s ease;
-}
-
-.btn-order .icon-box {
-    color: #ffffff;
-    transition: color 0.3s ease;
-}
-
-.btn-order:hover {
-    background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.2));
-    border-color: #00f2fe;
-    box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
-    transform: translateY(-2px);
-    color: #ffffff;
-}
-
-.btn-order:hover .icon-box {
-    color: #00f2fe;
-}
-
-.btn-order:hover .btn-title {
-    color: #ffffff;
-}
-
-.btn-order:hover .btn-subtitle {
-    color: #00f2fe;
-    opacity: 1;
-}
-
-/* ==========================================================================
-   8. LIVE
+   5. LIVE
    ========================================================================== */
 .live-badge {
     display: none;
@@ -639,99 +456,30 @@ body {
     100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
 }
 
-.btn-twitch.btn-live {
-    border-color: rgba(169, 112, 255, 0.6) !important;
-    background: rgba(169, 112, 255, 0.12) !important;
-    box-shadow: 0 0 20px rgba(169, 112, 255, 0.3);
+.btn.btn-live {
+    border-color: rgba(var(--live-rgb), 0.6) !important;
+    background: rgba(var(--live-rgb), 0.12) !important;
+    box-shadow: 0 0 20px rgba(var(--live-rgb), 0.3);
 }
 
-.btn-twitch.btn-live .live-badge {
+.btn.btn-live .live-badge {
     display: inline-block;
-    background: var(--twitch-color);
-    --badge-glow: rgba(169, 112, 255, 0.8);
+    background: var(--live-accent);
+    --badge-glow: rgba(var(--live-rgb), 0.8);
     animation: pulse 2s infinite;
 }
 
-.btn-twitch.btn-live .icon-box {
-    color: var(--twitch-color);
+.btn.btn-live .icon-box {
+    color: var(--live-accent);
     opacity: 1;
-}
-
-.btn-youtube.btn-live {
-    border-color: rgba(255, 42, 42, 0.6) !important;
-    background: rgba(255, 42, 42, 0.12) !important;
-    box-shadow: 0 0 20px rgba(255, 42, 42, 0.3);
-}
-
-.btn-youtube.btn-live .live-badge {
-    display: inline-block;
-    background: var(--youtube-color);
-    --badge-glow: rgba(255, 42, 42, 0.8);
-    animation: pulse 2s infinite;
-}
-
-.btn-youtube.btn-live .icon-box {
-    color: var(--youtube-color);
-    opacity: 1;
-}
-
-.btn-vk.btn-live {
-    border-color: rgba(0, 119, 255, 0.6) !important;
-    background: rgba(0, 119, 255, 0.12) !important;
-    box-shadow: 0 0 20px rgba(0, 119, 255, 0.3);
-}
-
-.btn-vk.btn-live .live-badge {
-    display: inline-block;
-    background: var(--vk-color);
-    --badge-glow: rgba(0, 119, 255, 0.8);
-    animation: pulse 2s infinite;
-}
-
-.btn-vk.btn-live .icon-box {
-    color: var(--vk-color);
-    opacity: 1;
-}
-
-.btn-kick.btn-live {
-    border-color: rgba(83, 252, 24, 0.6) !important;
-    background: rgba(83, 252, 24, 0.12) !important;
-    box-shadow: 0 0 20px rgba(83, 252, 24, 0.3);
 }
 
 .btn-kick.btn-live .live-badge {
-    display: inline-block;
-    background: var(--kick-color);
     color: #000000;
-    --badge-glow: rgba(83, 252, 24, 0.8);
-    animation: pulse 2s infinite;
-}
-
-.btn-kick.btn-live .icon-box {
-    color: var(--kick-color);
-    opacity: 1;
-}
-
-.btn-goodgame.btn-live {
-    border-color: rgba(67, 113, 165, 0.6) !important;
-    background: rgba(67, 113, 165, 0.12) !important;
-    box-shadow: 0 0 20px rgba(67, 113, 165, 0.3);
-}
-
-.btn-goodgame.btn-live .live-badge {
-    display: inline-block;
-    background: var(--goodgame-color);
-    --badge-glow: rgba(67, 113, 165, 0.8);
-    animation: pulse 2s infinite;
-}
-
-.btn-goodgame.btn-live .icon-box {
-    color: var(--goodgame-color);
-    opacity: 1;
 }
 
 /* ==========================================================================
-   9. FOOTER
+   6. FOOTER
    ========================================================================== */
 .footer {
     margin-top: 28px;
