@@ -58,10 +58,7 @@ body {
     height: 200%;
     z-index: 0;
     pointer-events: none;
-    background: radial-gradient(circle at 20% 20%, rgba(169, 112, 255, 0.18) 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(0, 119, 255, 0.15) 0%, transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(83, 252, 24, 0.08) 0%, transparent 35%);
+    background: radial-gradient(circle at 20% 20%, rgba(169, 112, 255, 0.18) 0%, transparent 40%), radial-gradient(circle at 80% 80%, rgba(0, 119, 255, 0.15) 0%, transparent 40%), radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.12) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(83, 252, 24, 0.08) 0%, transparent 35%);
     filter: blur(80px);
     animation: auroraMove 180s ease-in-out infinite alternate;
 }
@@ -87,11 +84,16 @@ body {
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
 
+/* ==========================================================================
+   2. АВАТАРКА
+   ========================================================================== */
 .avatar-container {
     position: relative;
     width: 104px;
     height: 104px;
     margin: 0 auto 16px;
+    overflow: visible;
+    isolation: isolate;
 }
 
 .avatar-container::before {
@@ -113,6 +115,8 @@ body {
 }
 
 .avatar {
+    position: relative;
+    z-index: 2;
     width: 100%;
     height: 100%;
     border-radius: 50%;
@@ -121,22 +125,9 @@ body {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
-/* ==========================================================================
-   СЕРДЕЧКИ ВОКРУГ АВАТАРКИ
-   ========================================================================== */
-.avatar-container {
-    overflow: visible;
-    isolation: isolate;
-}
-
-.avatar {
-    position: relative;
-    z-index: 2;
-}
-
 .avatar-heart-fx {
     position: absolute;
-    inset: -35px;
+    inset: -32px;
     z-index: 1;
     pointer-events: none;
     overflow: visible;
@@ -144,14 +135,14 @@ body {
 
 .avatar-heart {
     position: absolute;
-    bottom: 10px;
+    bottom: 12px;
     display: block;
     font-family: Arial, sans-serif;
     line-height: 1;
     color: var(--heart-color);
     opacity: 0;
-    filter: blur(0.7px);
-    text-shadow: 0 0 8px currentColor, 0 0 16px currentColor;
+    filter: blur(0.8px);
+    text-shadow: 0 0 10px currentColor;
     pointer-events: none;
     user-select: none;
     will-change: transform, opacity;
@@ -159,11 +150,11 @@ body {
 }
 
 @keyframes avatarHeartFloat {
-    0% { transform: translate3d(0, 15px, 0) rotate(-12deg) scale(0.7); opacity: 0; }
+    0% { transform: translate3d(0, 15px, 0) rotate(-10deg) scale(0.75); opacity: 0; }
     15% { opacity: var(--heart-opacity); }
-    45% { transform: translate3d(var(--heart-drift1), -35px, 0) rotate(6deg) scale(1); opacity: var(--heart-opacity); }
-    80% { transform: translate3d(var(--heart-drift2), -75px, 0) rotate(-5deg) scale(1.05); opacity: var(--heart-opacity); }
-    100% { transform: translate3d(var(--heart-drift3), -110px, 0) rotate(10deg) scale(0.8); opacity: 0; }
+    45% { transform: translate3d(var(--heart-drift1), -35px, 0) rotate(5deg) scale(1); opacity: var(--heart-opacity); }
+    80% { transform: translate3d(var(--heart-drift2), -72px, 0) rotate(-4deg) scale(1.03); opacity: var(--heart-opacity); }
+    100% { transform: translate3d(var(--heart-drift3), -105px, 0) rotate(8deg) scale(0.85); opacity: 0; }
 }
 
 .username {
@@ -218,7 +209,7 @@ body {
 }
 
 /* ==========================================================================
-   2. КНОПКИ
+   3. КНОПКИ
    ========================================================================== */
 .btn {
     position: relative;
@@ -318,7 +309,7 @@ body {
 }
 
 /* ==========================================================================
-   3. ЛЕТАЮЩИЕ СИМВОЛЫ ВНУТРИ КНОПОК
+   4. ЛЕТАЮЩИЕ СИМВОЛЫ В КНОПКАХ
    ========================================================================== */
 .button-symbol-fx {
     position: absolute;
@@ -339,8 +330,8 @@ body {
     user-select: none;
     pointer-events: none;
     color: var(--fx-color);
-    filter: blur(1.525px);
-    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+    filter: blur(1px);
+    text-shadow: 0 0 12px currentColor;
     will-change: transform, opacity;
     animation: buttonSymbolFloat linear infinite;
 }
@@ -368,18 +359,17 @@ body {
 }
 
 @keyframes buttonSymbolFloat {
-    0% { transform: translate3d(0, 25px, 0) rotate(-10deg) scale(0.8); opacity: 0; }
+    0% { transform: translate3d(0, 24px, 0) rotate(-8deg) scale(0.82); opacity: 0; }
     12% { opacity: var(--fx-opacity); }
     45% { transform: translate3d(var(--drift1), -18px, 0) rotate(3deg) scale(1); opacity: var(--fx-opacity); }
-    80% { transform: translate3d(var(--drift2), -48px, 0) rotate(-4deg) scale(1.05); opacity: var(--fx-opacity); }
+    80% { transform: translate3d(var(--drift2), -47px, 0) rotate(-3deg) scale(1.03); opacity: var(--fx-opacity); }
     92% { opacity: var(--fx-opacity); }
-    100% { transform: translate3d(var(--drift3), -76px, 0) rotate(8deg) scale(0.9); opacity: 0; }
+    100% { transform: translate3d(var(--drift3), -74px, 0) rotate(7deg) scale(0.9); opacity: 0; }
 }
 
 /* ==========================================================================
-   4. ПОДСВЕТКА ПЛОЩАДОК
+   5. ПОДСВЕТКА ПЛОЩАДОК
    ========================================================================== */
-
 /* Twitch */
 .btn-twitch:hover {
     border-color: rgba(169, 112, 255, 0.6);
@@ -573,7 +563,7 @@ body {
 }
 
 /* ==========================================================================
-   5. БЛОК ПОДДЕРЖКИ
+   6. БЛОК ПОДДЕРЖКИ
    ========================================================================== */
 .support-zone {
     position: relative;
@@ -590,7 +580,7 @@ body {
 }
 
 /* ==========================================================================
-   6. ЗАКАЗ ИГР
+   7. ЗАКАЗ ИГР
    ========================================================================== */
 .btn-order {
     background: rgba(255, 255, 255, 0.05);
@@ -626,7 +616,7 @@ body {
 }
 
 /* ==========================================================================
-   7. LIVE
+   8. LIVE
    ========================================================================== */
 .live-badge {
     display: none;
@@ -711,7 +701,7 @@ body {
 .btn-kick.btn-live .live-badge {
     display: inline-block;
     background: var(--kick-color);
-    color: #000;
+    color: #000000;
     --badge-glow: rgba(83, 252, 24, 0.8);
     animation: pulse 2s infinite;
 }
@@ -740,7 +730,7 @@ body {
 }
 
 /* ==========================================================================
-   8. FOOTER
+   9. FOOTER
    ========================================================================== */
 .footer {
     margin-top: 28px;
