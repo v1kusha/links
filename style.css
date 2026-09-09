@@ -437,17 +437,17 @@ body {
 
 /* GoodGame */
 .btn-goodgame:hover {
-    border-color: #4371a5;
-    background: rgba(67, 113, 165, 0.20);
-    box-shadow: 0 0 20px rgba(67, 113, 165, 0.40);
+    border-color: #5b8fc9;
+    background: rgba(91, 143, 201, 0.20);
+    box-shadow: 0 0 20px rgba(91, 143, 201, 0.80);
 }
 
 .btn-goodgame:hover .icon-box {
-    color: var(--goodgame-color);
+    color: #5b8fc9;
 }
 
 .btn-goodgame:hover .btn-subtitle {
-    color: var(--goodgame-color);
+    color: #5b8fc9;
     opacity: 1;
 }
 
