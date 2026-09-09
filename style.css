@@ -368,13 +368,14 @@ body {
 }
 
 /* ==========================================================================
-   5. ПОДСВЕТКА ПЛОЩАДОК
+   ЯРКАЯ ПОДСВЕТКА ПЛОЩАДОК
    ========================================================================== */
+
 /* Twitch */
 .btn-twitch:hover {
-    border-color: rgba(169, 112, 255, 0.6);
-    background: rgba(169, 112, 255, 0.1);
-    box-shadow: 0 0 25px rgba(169, 112, 255, 0.35);
+    border-color: #a970ff;
+    background: rgba(169, 112, 255, 0.20);
+    box-shadow: 0 0 20px rgba(169, 112, 255, 0.40);
 }
 
 .btn-twitch:hover .icon-box {
@@ -382,15 +383,15 @@ body {
 }
 
 .btn-twitch:hover .btn-subtitle {
-    color: #d8b4fe;
+    color: var(--twitch-color);
     opacity: 1;
 }
 
 /* YouTube */
 .btn-youtube:hover {
-    border-color: rgba(255, 42, 42, 0.6);
-    background: rgba(255, 42, 42, 0.1);
-    box-shadow: 0 0 25px rgba(255, 42, 42, 0.35);
+    border-color: #ff2a2a;
+    background: rgba(255, 42, 42, 0.20);
+    box-shadow: 0 0 20px rgba(255, 42, 42, 0.40);
 }
 
 .btn-youtube:hover .icon-box {
@@ -398,15 +399,15 @@ body {
 }
 
 .btn-youtube:hover .btn-subtitle {
-    color: #fca5a5;
+    color: var(--youtube-color);
     opacity: 1;
 }
 
 /* VK */
 .btn-vk:hover {
-    border-color: rgba(0, 119, 255, 0.6);
-    background: rgba(0, 119, 255, 0.1);
-    box-shadow: 0 0 25px rgba(0, 119, 255, 0.35);
+    border-color: #0077ff;
+    background: rgba(0, 119, 255, 0.20);
+    box-shadow: 0 0 20px rgba(0, 119, 255, 0.40);
 }
 
 .btn-vk:hover .icon-box {
@@ -414,15 +415,15 @@ body {
 }
 
 .btn-vk:hover .btn-subtitle {
-    color: #93c5fd;
+    color: var(--vk-color);
     opacity: 1;
 }
 
 /* Kick */
 .btn-kick:hover {
-    border-color: rgba(83, 252, 24, 0.6);
-    background: rgba(83, 252, 24, 0.1);
-    box-shadow: 0 0 25px rgba(83, 252, 24, 0.3);
+    border-color: #53fc18;
+    background: rgba(83, 252, 24, 0.20);
+    box-shadow: 0 0 20px rgba(83, 252, 24, 0.40);
 }
 
 .btn-kick:hover .icon-box {
@@ -430,15 +431,15 @@ body {
 }
 
 .btn-kick:hover .btn-subtitle {
-    color: #86efac;
+    color: var(--kick-color);
     opacity: 1;
 }
 
 /* GoodGame */
 .btn-goodgame:hover {
-    border-color: rgba(67, 113, 165, 0.6);
-    background: rgba(67, 113, 165, 0.1);
-    box-shadow: 0 0 25px rgba(67, 113, 165, 0.35);
+    border-color: #4371a5;
+    background: rgba(67, 113, 165, 0.20);
+    box-shadow: 0 0 20px rgba(67, 113, 165, 0.40);
 }
 
 .btn-goodgame:hover .icon-box {
@@ -446,15 +447,15 @@ body {
 }
 
 .btn-goodgame:hover .btn-subtitle {
-    color: #93c5fd;
+    color: var(--goodgame-color);
     opacity: 1;
 }
 
 /* Telegram */
 .btn-telegram:hover {
-    border-color: rgba(36, 161, 222, 0.6);
-    background: rgba(36, 161, 222, 0.1);
-    box-shadow: 0 0 25px rgba(36, 161, 222, 0.35);
+    border-color: #24a1de;
+    background: rgba(36, 161, 222, 0.20);
+    box-shadow: 0 0 20px rgba(36, 161, 222, 0.40);
 }
 
 .btn-telegram:hover .icon-box {
@@ -462,15 +463,15 @@ body {
 }
 
 .btn-telegram:hover .btn-subtitle {
-    color: #7dd3fc;
+    color: var(--telegram-color);
     opacity: 1;
 }
 
 /* Discord */
 .btn-discord:hover {
-    border-color: rgba(88, 101, 242, 0.6);
-    background: rgba(88, 101, 242, 0.1);
-    box-shadow: 0 0 25px rgba(88, 101, 242, 0.35);
+    border-color: #5865f2;
+    background: rgba(88, 101, 242, 0.20);
+    box-shadow: 0 0 20px rgba(88, 101, 242, 0.40);
 }
 
 .btn-discord:hover .icon-box {
@@ -478,15 +479,15 @@ body {
 }
 
 .btn-discord:hover .btn-subtitle {
-    color: #a5b4fc;
+    color: var(--discord-color);
     opacity: 1;
 }
 
 /* Donatty */
 .btn-donatty:hover {
-    border-color: rgba(168, 85, 247, 0.6);
-    background: rgba(168, 85, 247, 0.1);
-    box-shadow: 0 0 25px rgba(168, 85, 247, 0.35);
+    border-color: #a855f7;
+    background: rgba(168, 85, 247, 0.20);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.40);
 }
 
 .btn-donatty:hover .icon-box {
@@ -494,15 +495,15 @@ body {
 }
 
 .btn-donatty:hover .btn-subtitle {
-    color: #f0abfc;
+    color: var(--donatty-color);
     opacity: 1;
 }
 
 /* DonationAlerts */
 .btn-donationalerts:hover {
-    border-color: rgba(245, 158, 11, 0.7);
-    background: rgba(245, 158, 11, 0.12);
-    box-shadow: 0 0 25px rgba(245, 158, 11, 0.42);
+    border-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.20);
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.40);
 }
 
 .btn-donationalerts:hover .icon-box {
@@ -516,9 +517,9 @@ body {
 
 /* Fetta */
 .btn-fetta:hover {
-    border-color: rgba(236, 72, 153, 0.6);
-    background: rgba(236, 72, 153, 0.1);
-    box-shadow: 0 0 25px rgba(236, 72, 153, 0.35);
+    border-color: #ec4899;
+    background: rgba(236, 72, 153, 0.20);
+    box-shadow: 0 0 20px rgba(236, 72, 153, 0.40);
 }
 
 .btn-fetta:hover .icon-box {
@@ -526,15 +527,15 @@ body {
 }
 
 .btn-fetta:hover .btn-subtitle {
-    color: #f472b6;
+    color: var(--fetta-color);
     opacity: 1;
 }
 
 /* Boosty */
 .btn-boosty:hover {
-    border-color: rgba(241, 95, 44, 0.7);
-    background: rgba(241, 95, 44, 0.12);
-    box-shadow: 0 0 25px rgba(241, 95, 44, 0.4);
+    border-color: #f15f2c;
+    background: rgba(241, 95, 44, 0.20);
+    box-shadow: 0 0 20px rgba(241, 95, 44, 0.40);
 }
 
 .btn-boosty:hover .icon-box {
@@ -548,9 +549,9 @@ body {
 
 /* Meme Alerts */
 .btn-memes:hover {
-    border-color: rgba(250, 204, 21, 0.75);
-    background: rgba(250, 204, 21, 0.11);
-    box-shadow: 0 0 25px rgba(250, 204, 21, 0.4);
+    border-color: #facc15;
+    background: rgba(250, 204, 21, 0.20);
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.40);
 }
 
 .btn-memes:hover .icon-box {
