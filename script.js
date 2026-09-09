@@ -260,3 +260,41 @@ function createButtonEffect(config) {
 }
 
 buttonEffects.forEach(createButtonEffect);
+
+/* ==========================================================================
+   5. РАЗНОЦВЕТНЫЕ СЕРДЕЧКИ ВОКРУГ АВАТАРКИ
+   ========================================================================== */
+const avatarContainer = document.querySelector('.avatar-container');
+
+if (avatarContainer) {
+    const oldAvatarFx = avatarContainer.querySelector('.avatar-heart-fx');
+    if (oldAvatarFx) oldAvatarFx.remove();
+
+    const avatarFx = document.createElement('div');
+    avatarFx.className = 'avatar-heart-fx';
+    avatarFx.setAttribute('aria-hidden', 'true');
+    avatarContainer.appendChild(avatarFx);
+
+    const heartColors = ['#ff4d8d', '#a970ff', '#22d3ee', '#facc15', '#53fc18', '#ff6b6b', '#60a5fa', '#ec4899'];
+
+    for (let i = 0; i < 14; i++) {
+        const heart = document.createElement('span');
+        const leftSide = Math.random() < 0.5;
+        const drift1 = leftSide ? -8 - Math.random() * 18 : 8 + Math.random() * 18;
+        const drift2 = leftSide ? -15 - Math.random() * 22 : 15 + Math.random() * 22;
+        const drift3 = leftSide ? -5 - Math.random() * 20 : 5 + Math.random() * 20;
+
+        heart.className = 'avatar-heart';
+        heart.textContent = '♥';
+        heart.style.fontSize = `${10 + Math.random() * 10}px`;
+        heart.style.left = leftSide ? `${5 + Math.random() * 20}%` : `${75 + Math.random() * 20}%`;
+        heart.style.animationDuration = `${4 + Math.random() * 4}s`;
+        heart.style.animationDelay = `${-Math.random() * 8}s`;
+        heart.style.setProperty('--heart-color', heartColors[Math.floor(Math.random() * heartColors.length)]);
+        heart.style.setProperty('--heart-opacity', `${0.35 + Math.random() * 0.35}`);
+        heart.style.setProperty('--heart-drift1', `${drift1}px`);
+        heart.style.setProperty('--heart-drift2', `${drift2}px`);
+        heart.style.setProperty('--heart-drift3', `${drift3}px`);
+        avatarFx.appendChild(heart);
+    }
+}
