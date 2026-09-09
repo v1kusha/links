@@ -1,0 +1,705 @@
+/* ==========================================================================
+   1. СБРОС СТИЛЕЙ И ПЕРЕМЕННЫЕ
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+:root {
+    --bg-color: #030408;
+    --card-bg: rgba(13, 15, 23, 0.65);
+    --card-border: rgba(255, 255, 255, 0.12);
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --avatar-glow: rgba(169, 112, 255, 0.85);
+    --twitch-color: #a970ff;
+    --youtube-color: #ff2a2a;
+    --vk-color: #0077ff;
+    --kick-color: #53fc18;
+    --goodgame-color: #4371a5;
+    --telegram-color: #24a1de;
+    --discord-color: #5865f2;
+    --boosty-color: #f15f2c;
+    --donatty-color: #a855f7;
+    --donationalerts-color: #f59e0b;
+    --fetta-color: #ec4899;
+    --memes-color: #facc15;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 16px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.aurora-bg {
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at 20% 20%, rgba(169, 112, 255, 0.18) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(0, 119, 255, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(83, 252, 24, 0.08) 0%, transparent 35%);
+    filter: blur(80px);
+    animation: auroraMove 180s ease-in-out infinite alternate;
+}
+
+@keyframes auroraMove {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.15); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+.card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 440px;
+    background: var(--card-bg);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid var(--card-border);
+    border-radius: 28px;
+    padding: 32px 20px;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.avatar-container {
+    position: relative;
+    width: 104px;
+    height: 104px;
+    margin: 0 auto 16px;
+}
+
+.avatar-container::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: var(--avatar-glow);
+    opacity: 0.85;
+    filter: blur(14px);
+    z-index: -1;
+    transition: background 0.8s ease;
+    animation: avatarPulse 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes avatarPulse {
+    0% { opacity: 0.6; transform: scale(0.96); }
+    100% { opacity: 1; transform: scale(1.06); }
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.username {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+    background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.description {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    font-weight: 500;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 22px 0 10px 0;
+    color: var(--text-secondary);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    opacity: 0.85;
+}
+
+.section-title::before,
+.section-title::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.section-title::before {
+    margin-right: 12px;
+}
+
+.section-title::after {
+    margin-left: 12px;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ==========================================================================
+   2. КНОПКИ
+   ========================================================================== */
+.btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: 0.5s;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn .icon-box {
+    position: absolute;
+    left: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: #ffffff;
+    opacity: 0.85;
+    z-index: 2;
+    transition: transform 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+}
+
+.btn .icon-box .icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.btn .icon-box svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.btn-text-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 35px;
+    position: relative;
+    z-index: 2;
+}
+
+.btn-title {
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.btn-subtitle {
+    font-weight: 500;
+    font-size: 11.5px;
+    margin-top: 3px;
+    color: var(--text-secondary);
+    opacity: 0.8;
+    transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:hover .icon-box {
+    transform: scale(1.15);
+    opacity: 1;
+}
+
+/* ==========================================================================
+   3. ЛЕТАЮЩИЕ СИМВОЛЫ ВНУТРИ КНОПОК
+   ========================================================================== */
+.button-symbol-fx {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.button-fx-symbol {
+    position: absolute;
+    bottom: -20px;
+    display: block;
+    line-height: 1;
+    font-weight: 800;
+    opacity: 0;
+    user-select: none;
+    pointer-events: none;
+    color: var(--fx-color);
+    filter: blur(1.525px);
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+    will-change: transform, opacity;
+    animation: buttonSymbolFloat linear infinite;
+}
+
+.button-fx-symbol.like {
+    width: 17px;
+    height: 17px;
+}
+
+.button-fx-symbol.like svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    fill: currentColor;
+}
+
+.button-fx-symbol.heart {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+}
+
+.button-fx-symbol.dollar {
+    font-family: Arial, sans-serif;
+    font-size: 21px;
+}
+
+@keyframes buttonSymbolFloat {
+    0% { transform: translate3d(0, 25px, 0) rotate(-10deg) scale(0.8); opacity: 0; }
+    12% { opacity: var(--fx-opacity); }
+    45% { transform: translate3d(var(--drift1), -18px, 0) rotate(3deg) scale(1); opacity: var(--fx-opacity); }
+    80% { transform: translate3d(var(--drift2), -48px, 0) rotate(-4deg) scale(1.05); opacity: var(--fx-opacity); }
+    92% { opacity: var(--fx-opacity); }
+    100% { transform: translate3d(var(--drift3), -76px, 0) rotate(8deg) scale(0.9); opacity: 0; }
+}
+
+/* ==========================================================================
+   4. ПОДСВЕТКА ПЛОЩАДОК
+   ========================================================================== */
+
+/* Twitch */
+.btn-twitch:hover {
+    border-color: rgba(169, 112, 255, 0.6);
+    background: rgba(169, 112, 255, 0.1);
+    box-shadow: 0 0 25px rgba(169, 112, 255, 0.35);
+}
+
+.btn-twitch:hover .icon-box {
+    color: var(--twitch-color);
+}
+
+.btn-twitch:hover .btn-subtitle {
+    color: #d8b4fe;
+    opacity: 1;
+}
+
+/* YouTube */
+.btn-youtube:hover {
+    border-color: rgba(255, 42, 42, 0.6);
+    background: rgba(255, 42, 42, 0.1);
+    box-shadow: 0 0 25px rgba(255, 42, 42, 0.35);
+}
+
+.btn-youtube:hover .icon-box {
+    color: var(--youtube-color);
+}
+
+.btn-youtube:hover .btn-subtitle {
+    color: #fca5a5;
+    opacity: 1;
+}
+
+/* VK */
+.btn-vk:hover {
+    border-color: rgba(0, 119, 255, 0.6);
+    background: rgba(0, 119, 255, 0.1);
+    box-shadow: 0 0 25px rgba(0, 119, 255, 0.35);
+}
+
+.btn-vk:hover .icon-box {
+    color: var(--vk-color);
+}
+
+.btn-vk:hover .btn-subtitle {
+    color: #93c5fd;
+    opacity: 1;
+}
+
+/* Kick */
+.btn-kick:hover {
+    border-color: rgba(83, 252, 24, 0.6);
+    background: rgba(83, 252, 24, 0.1);
+    box-shadow: 0 0 25px rgba(83, 252, 24, 0.3);
+}
+
+.btn-kick:hover .icon-box {
+    color: var(--kick-color);
+}
+
+.btn-kick:hover .btn-subtitle {
+    color: #86efac;
+    opacity: 1;
+}
+
+/* GoodGame */
+.btn-goodgame:hover {
+    border-color: rgba(67, 113, 165, 0.6);
+    background: rgba(67, 113, 165, 0.1);
+    box-shadow: 0 0 25px rgba(67, 113, 165, 0.35);
+}
+
+.btn-goodgame:hover .icon-box {
+    color: var(--goodgame-color);
+}
+
+.btn-goodgame:hover .btn-subtitle {
+    color: #93c5fd;
+    opacity: 1;
+}
+
+/* Telegram */
+.btn-telegram:hover {
+    border-color: rgba(36, 161, 222, 0.6);
+    background: rgba(36, 161, 222, 0.1);
+    box-shadow: 0 0 25px rgba(36, 161, 222, 0.35);
+}
+
+.btn-telegram:hover .icon-box {
+    color: var(--telegram-color);
+}
+
+.btn-telegram:hover .btn-subtitle {
+    color: #7dd3fc;
+    opacity: 1;
+}
+
+/* Discord */
+.btn-discord:hover {
+    border-color: rgba(88, 101, 242, 0.6);
+    background: rgba(88, 101, 242, 0.1);
+    box-shadow: 0 0 25px rgba(88, 101, 242, 0.35);
+}
+
+.btn-discord:hover .icon-box {
+    color: var(--discord-color);
+}
+
+.btn-discord:hover .btn-subtitle {
+    color: #a5b4fc;
+    opacity: 1;
+}
+
+/* Donatty */
+.btn-donatty:hover {
+    border-color: rgba(168, 85, 247, 0.6);
+    background: rgba(168, 85, 247, 0.1);
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.35);
+}
+
+.btn-donatty:hover .icon-box {
+    color: var(--donatty-color);
+}
+
+.btn-donatty:hover .btn-subtitle {
+    color: #f0abfc;
+    opacity: 1;
+}
+
+/* DonationAlerts */
+.btn-donationalerts:hover {
+    border-color: rgba(245, 158, 11, 0.7);
+    background: rgba(245, 158, 11, 0.12);
+    box-shadow: 0 0 25px rgba(245, 158, 11, 0.42);
+}
+
+.btn-donationalerts:hover .icon-box {
+    color: var(--donationalerts-color);
+}
+
+.btn-donationalerts:hover .btn-subtitle {
+    color: var(--donationalerts-color);
+    opacity: 1;
+}
+
+/* Fetta */
+.btn-fetta:hover {
+    border-color: rgba(236, 72, 153, 0.6);
+    background: rgba(236, 72, 153, 0.1);
+    box-shadow: 0 0 25px rgba(236, 72, 153, 0.35);
+}
+
+.btn-fetta:hover .icon-box {
+    color: var(--fetta-color);
+}
+
+.btn-fetta:hover .btn-subtitle {
+    color: #f472b6;
+    opacity: 1;
+}
+
+/* Boosty */
+.btn-boosty:hover {
+    border-color: rgba(241, 95, 44, 0.7);
+    background: rgba(241, 95, 44, 0.12);
+    box-shadow: 0 0 25px rgba(241, 95, 44, 0.4);
+}
+
+.btn-boosty:hover .icon-box {
+    color: var(--boosty-color);
+}
+
+.btn-boosty:hover .btn-subtitle {
+    color: var(--boosty-color);
+    opacity: 1;
+}
+
+/* Meme Alerts */
+.btn-memes:hover {
+    border-color: rgba(250, 204, 21, 0.75);
+    background: rgba(250, 204, 21, 0.11);
+    box-shadow: 0 0 25px rgba(250, 204, 21, 0.4);
+}
+
+.btn-memes:hover .icon-box {
+    color: var(--memes-color);
+}
+
+.btn-memes:hover .btn-subtitle {
+    color: var(--memes-color);
+    opacity: 1;
+}
+
+/* ==========================================================================
+   5. БЛОК ПОДДЕРЖКИ
+   ========================================================================== */
+.support-zone {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    border-radius: 14px;
+}
+
+.support-fx {
+    display: none;
+}
+
+/* ==========================================================================
+   6. ЗАКАЗ ИГР
+   ========================================================================== */
+.btn-order {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.btn-order .icon-box {
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.btn-order:hover {
+    background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.2));
+    border-color: #00f2fe;
+    box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+    transform: translateY(-2px);
+    color: #ffffff;
+}
+
+.btn-order:hover .icon-box {
+    color: #00f2fe;
+}
+
+.btn-order:hover .btn-title {
+    color: #ffffff;
+}
+
+.btn-order:hover .btn-subtitle {
+    color: #00f2fe;
+    opacity: 1;
+}
+
+/* ==========================================================================
+   7. LIVE
+   ========================================================================== */
+.live-badge {
+    display: none;
+    position: absolute;
+    right: 14px;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 3px 7px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    z-index: 3;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 var(--badge-glow); }
+    70% { box-shadow: 0 0 0 7px rgba(0, 0, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
+}
+
+.btn-twitch.btn-live {
+    border-color: rgba(169, 112, 255, 0.6) !important;
+    background: rgba(169, 112, 255, 0.12) !important;
+    box-shadow: 0 0 20px rgba(169, 112, 255, 0.3);
+}
+
+.btn-twitch.btn-live .live-badge {
+    display: inline-block;
+    background: var(--twitch-color);
+    --badge-glow: rgba(169, 112, 255, 0.8);
+    animation: pulse 2s infinite;
+}
+
+.btn-twitch.btn-live .icon-box {
+    color: var(--twitch-color);
+    opacity: 1;
+}
+
+.btn-youtube.btn-live {
+    border-color: rgba(255, 42, 42, 0.6) !important;
+    background: rgba(255, 42, 42, 0.12) !important;
+    box-shadow: 0 0 20px rgba(255, 42, 42, 0.3);
+}
+
+.btn-youtube.btn-live .live-badge {
+    display: inline-block;
+    background: var(--youtube-color);
+    --badge-glow: rgba(255, 42, 42, 0.8);
+    animation: pulse 2s infinite;
+}
+
+.btn-youtube.btn-live .icon-box {
+    color: var(--youtube-color);
+    opacity: 1;
+}
+
+.btn-vk.btn-live {
+    border-color: rgba(0, 119, 255, 0.6) !important;
+    background: rgba(0, 119, 255, 0.12) !important;
+    box-shadow: 0 0 20px rgba(0, 119, 255, 0.3);
+}
+
+.btn-vk.btn-live .live-badge {
+    display: inline-block;
+    background: var(--vk-color);
+    --badge-glow: rgba(0, 119, 255, 0.8);
+    animation: pulse 2s infinite;
+}
+
+.btn-vk.btn-live .icon-box {
+    color: var(--vk-color);
+    opacity: 1;
+}
+
+.btn-kick.btn-live {
+    border-color: rgba(83, 252, 24, 0.6) !important;
+    background: rgba(83, 252, 24, 0.12) !important;
+    box-shadow: 0 0 20px rgba(83, 252, 24, 0.3);
+}
+
+.btn-kick.btn-live .live-badge {
+    display: inline-block;
+    background: var(--kick-color);
+    color: #000;
+    --badge-glow: rgba(83, 252, 24, 0.8);
+    animation: pulse 2s infinite;
+}
+
+.btn-kick.btn-live .icon-box {
+    color: var(--kick-color);
+    opacity: 1;
+}
+
+.btn-goodgame.btn-live {
+    border-color: rgba(67, 113, 165, 0.6) !important;
+    background: rgba(67, 113, 165, 0.12) !important;
+    box-shadow: 0 0 20px rgba(67, 113, 165, 0.3);
+}
+
+.btn-goodgame.btn-live .live-badge {
+    display: inline-block;
+    background: var(--goodgame-color);
+    --badge-glow: rgba(67, 113, 165, 0.8);
+    animation: pulse 2s infinite;
+}
+
+.btn-goodgame.btn-live .icon-box {
+    color: var(--goodgame-color);
+    opacity: 1;
+}
+
+/* ==========================================================================
+   8. FOOTER
+   ========================================================================== */
+.footer {
+    margin-top: 28px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
