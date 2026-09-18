@@ -1,6 +1,3 @@
-/* ==========================================================================
-   1. СВЕЧЕНИЕ АВАТАРКИ
-   ========================================================================== */
 const avatarImg = document.getElementById('avatar-img');
 
 if (avatarImg) {
@@ -24,7 +21,6 @@ if (avatarImg) {
 
             for (let i = 0; i < data.length; i += 4) {
                 if (data[i] + data[i + 1] + data[i + 2] <= 60) continue;
-
                 r += data[i];
                 g += data[i + 1];
                 b += data[i + 2];
@@ -47,9 +43,6 @@ if (avatarImg) {
     }
 }
 
-/* ==========================================================================
-   2. ИНТЕРАКТИВНЫЙ ФОН
-   ========================================================================== */
 const particleCanvas = document.getElementById('particle-canvas');
 
 if (particleCanvas) {
@@ -164,9 +157,6 @@ if (particleCanvas) {
     startParticleAnimation();
 }
 
-/* ==========================================================================
-   3. LIVE СТАТУСЫ
-   ========================================================================== */
 const BACKEND_URL = 'https://stream-links-backend-1061508657324.europe-west1.run.app';
 const LIVE_PLATFORMS = ['twitch', 'youtube', 'vk', 'kick', 'goodgame'];
 
@@ -185,6 +175,20 @@ function setPlatformStatus(platform, isOnline) {
     }
 }
 
+function updateStreamNow(stream) {
+    const container = document.getElementById('stream-now');
+    const title = document.getElementById('stream-now-title');
+
+    if (!container || !title) return;
+
+    const streamTitle = typeof stream?.title === 'string'
+        ? stream.title.trim()
+        : '';
+
+    container.hidden = !streamTitle;
+    title.textContent = streamTitle;
+}
+
 async function checkStatuses() {
     if (document.hidden) return;
 
@@ -197,6 +201,8 @@ async function checkStatuses() {
         LIVE_PLATFORMS.forEach(platform => {
             setPlatformStatus(platform, data[platform] === 'online');
         });
+
+        updateStreamNow(data.stream);
     } catch (err) {
         console.error('Ошибка получения статусов:', err);
     }
@@ -209,9 +215,6 @@ document.addEventListener('visibilitychange', () => {
     if (!document.hidden) checkStatuses();
 });
 
-/* ==========================================================================
-   4. ЭФФЕКТЫ ВНУТРИ КНОПОК
-   ========================================================================== */
 const EFFECT_GROUPS = {
     like: ['twitch', 'youtube', 'vk', 'kick', 'goodgame'],
     dollar: ['order', 'donatty', 'donationalerts', 'fetta', 'boosty', 'memes'],
@@ -275,9 +278,38 @@ Object.entries(EFFECT_GROUPS).forEach(([type, platforms]) => {
     });
 });
 
-/* ==========================================================================
-   5. СЕРДЕЧКИ ВОКРУГ АВАТАРКИ
-   ========================================================================== */
+function createStreamStarEffect() {
+    const card = document.querySelector('.stream-now');
+    if (!card) return;
+
+    const fx = document.createElement('div');
+    fx.className = 'stream-star-fx';
+    fx.setAttribute('aria-hidden', 'true');
+    card.prepend(fx);
+
+    for (let i = 0; i < EFFECT_COUNT; i++) {
+        const star = document.createElement('span');
+        star.className = 'stream-star';
+        star.textContent = '★';
+
+        star.style.left = i < 3
+            ? `${randomBetween(3, 23)}%`
+            : `${randomBetween(77, 95)}%`;
+
+        star.style.fontSize = `${randomBetween(12, 21)}px`;
+        star.style.animationDuration = `${randomBetween(5, 8.5)}s`;
+        star.style.animationDelay = `${-randomBetween(0, 8)}s`;
+        star.style.setProperty('--drift1', `${randomBetween(-7, 7)}px`);
+        star.style.setProperty('--drift2', `${randomBetween(-8, 8)}px`);
+        star.style.setProperty('--drift3', `${randomBetween(-7, 7)}px`);
+        star.style.setProperty('--fx-opacity', randomBetween(0.22, 0.42).toFixed(3));
+
+        fx.appendChild(star);
+    }
+}
+
+createStreamStarEffect();
+
 const avatarContainer = document.querySelector('.avatar-container');
 
 if (avatarContainer) {
@@ -344,9 +376,6 @@ if (avatarContainer) {
     }
 }
 
-/* ==========================================================================
-   6. ПЕРЕРИСОВКА ТЕКСТА ПОСЛЕ ИЗМЕНЕНИЯ МАСШТАБА
-   ========================================================================== */
 let zoomRepaintTimer;
 
 function repaintButtonText() {
