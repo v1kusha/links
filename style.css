@@ -355,9 +355,15 @@ body {
     padding: 0 35px;
     position: relative;
     z-index: 2;
+    /* Keep text on its own composited layer. This prevents Chrome from
+       dropping it during a repaint after browser zoom changes. */
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
 .btn-title {
+    position: relative;
+    z-index: 3;
     font-weight: 800;
     font-size: 14px;
     letter-spacing: 0.5px;
@@ -366,6 +372,8 @@ body {
 }
 
 .btn-subtitle {
+    position: relative;
+    z-index: 3;
     font-weight: 500;
     font-size: 11.5px;
     margin-top: 3px;
