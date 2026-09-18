@@ -4,7 +4,7 @@
 const avatarImg = document.getElementById('avatar-img');
 
 if (avatarImg) {
-    avatarImg.onerror = function() {
+    avatarImg.onerror = function () {
         this.onerror = null;
         this.src = 'https://picsum.photos/200';
     };
@@ -17,10 +17,14 @@ if (avatarImg) {
         try {
             ctx.drawImage(avatarImg, 0, 0, 50, 50);
             const data = ctx.getImageData(0, 0, 50, 50).data;
-            let r = 0, g = 0, b = 0, count = 0;
+            let r = 0;
+            let g = 0;
+            let b = 0;
+            let count = 0;
 
             for (let i = 0; i < data.length; i += 4) {
                 if (data[i] + data[i + 1] + data[i + 2] <= 60) continue;
+
                 r += data[i];
                 g += data[i + 1];
                 b += data[i + 2];
@@ -254,10 +258,7 @@ function createButtonEffect(button, type) {
 
 Object.entries(EFFECT_GROUPS).forEach(([type, platforms]) => {
     platforms.forEach(platform => {
-        createButtonEffect(
-            document.getElementById(`btn-${platform}`),
-            type
-        );
+        createButtonEffect(document.getElementById(`btn-${platform}`), type);
     });
 });
 
@@ -329,3 +330,21 @@ if (avatarContainer) {
         fx.appendChild(heart);
     }
 }
+
+/* ==========================================================================
+   6. ПЕРЕРИСОВКА ТЕКСТА ПОСЛЕ ИЗМЕНЕНИЯ МАСШТАБА
+   ========================================================================== */
+let zoomRepaintTimer;
+
+function repaintButtonText() {
+    document.querySelectorAll('.btn-text-group').forEach(textGroup => {
+        textGroup.style.display = 'none';
+        void textGroup.offsetHeight;
+        textGroup.style.display = '';
+    });
+}
+
+window.addEventListener('resize', () => {
+    window.clearTimeout(zoomRepaintTimer);
+    zoomRepaintTimer = window.setTimeout(repaintButtonText, 120);
+});
