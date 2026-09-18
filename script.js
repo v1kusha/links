@@ -170,6 +170,21 @@ if (particleCanvas) {
 const BACKEND_URL = 'https://stream-links-backend-1061508657324.europe-west1.run.app';
 const LIVE_PLATFORMS = ['twitch', 'youtube', 'vk', 'kick', 'goodgame'];
 
+function setPlatformStatus(platform, isOnline) {
+    const button = document.getElementById(`btn-${platform}`);
+    if (!button) return;
+
+    const badge = button.querySelector('.live-badge');
+
+    button.classList.add('btn-status-ready');
+    button.classList.toggle('btn-live', isOnline);
+    button.classList.toggle('btn-offline', !isOnline);
+
+    if (badge) {
+        badge.textContent = isOnline ? 'LIVE' : 'OFFLINE';
+    }
+}
+
 async function checkStatuses() {
     if (document.hidden) return;
 
@@ -180,9 +195,7 @@ async function checkStatuses() {
         const data = await response.json();
 
         LIVE_PLATFORMS.forEach(platform => {
-            document
-                .getElementById(`btn-${platform}`)
-                ?.classList.toggle('btn-live', data[platform] === 'online');
+            setPlatformStatus(platform, data[platform] === 'online');
         });
     } catch (err) {
         console.error('Ошибка получения статусов:', err);
