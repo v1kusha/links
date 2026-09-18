@@ -192,15 +192,20 @@ body {
 }
 
 .links {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
 .stream-ticker {
+    position: absolute;
+    top: -24px;
+    left: 0;
+    width: 100%;
     overflow: hidden;
     padding: 9px 0;
-    color: #facc15;
+    color: #e3c36e;
     white-space: nowrap;
 }
 
@@ -210,8 +215,12 @@ body {
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 0.3px;
-    text-shadow: 0 0 10px rgba(250, 204, 21, 0.45);
+    text-shadow: 0 0 8px rgba(227, 195, 110, 0.3);
     animation: streamTicker 18s linear infinite;
+}
+
+.stream-ticker + .section-title {
+    margin-top: 12px;
 }
 
 @keyframes streamTicker {
