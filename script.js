@@ -1,7 +1,10 @@
+/* ==========================================================================
+   1. СВЕЧЕНИЕ АВАТАРКИ
+   ========================================================================== */
 const avatarImg = document.getElementById('avatar-img');
 
 if (avatarImg) {
-    avatarImg.onerror = function () {
+    avatarImg.onerror = function() {
         this.onerror = null;
         this.src = 'https://picsum.photos/200';
     };
@@ -14,10 +17,7 @@ if (avatarImg) {
         try {
             ctx.drawImage(avatarImg, 0, 0, 50, 50);
             const data = ctx.getImageData(0, 0, 50, 50).data;
-            let r = 0;
-            let g = 0;
-            let b = 0;
-            let count = 0;
+            let r = 0, g = 0, b = 0, count = 0;
 
             for (let i = 0; i < data.length; i += 4) {
                 if (data[i] + data[i + 1] + data[i + 2] <= 60) continue;
@@ -43,6 +43,9 @@ if (avatarImg) {
     }
 }
 
+/* ==========================================================================
+   2. ИНТЕРАКТИВНЫЙ ФОН
+   ========================================================================== */
 const particleCanvas = document.getElementById('particle-canvas');
 
 if (particleCanvas) {
@@ -157,6 +160,9 @@ if (particleCanvas) {
     startParticleAnimation();
 }
 
+/* ==========================================================================
+   3. LIVE СТАТУСЫ
+   ========================================================================== */
 const BACKEND_URL = 'https://stream-links-backend-1061508657324.europe-west1.run.app';
 const LIVE_PLATFORMS = ['twitch', 'youtube', 'vk', 'kick', 'goodgame'];
 
@@ -215,6 +221,9 @@ document.addEventListener('visibilitychange', () => {
     if (!document.hidden) checkStatuses();
 });
 
+/* ==========================================================================
+   4. ЭФФЕКТЫ ВНУТРИ КНОПОК
+   ========================================================================== */
 const EFFECT_GROUPS = {
     like: ['twitch', 'youtube', 'vk', 'kick', 'goodgame'],
     dollar: ['order', 'donatty', 'donationalerts', 'fetta', 'boosty', 'memes'],
@@ -274,7 +283,10 @@ function createButtonEffect(button, type) {
 
 Object.entries(EFFECT_GROUPS).forEach(([type, platforms]) => {
     platforms.forEach(platform => {
-        createButtonEffect(document.getElementById(`btn-${platform}`), type);
+        createButtonEffect(
+            document.getElementById(`btn-${platform}`),
+            type
+        );
     });
 });
 
@@ -291,11 +303,7 @@ function createStreamStarEffect() {
         const star = document.createElement('span');
         star.className = 'stream-star';
         star.textContent = '★';
-
-        star.style.left = i < 3
-            ? `${randomBetween(3, 23)}%`
-            : `${randomBetween(77, 95)}%`;
-
+        star.style.left = i < 3 ? `${randomBetween(3, 23)}%` : `${randomBetween(77, 95)}%`;
         star.style.fontSize = `${randomBetween(12, 21)}px`;
         star.style.animationDuration = `${randomBetween(5, 8.5)}s`;
         star.style.animationDelay = `${-randomBetween(0, 8)}s`;
@@ -303,13 +311,63 @@ function createStreamStarEffect() {
         star.style.setProperty('--drift2', `${randomBetween(-8, 8)}px`);
         star.style.setProperty('--drift3', `${randomBetween(-7, 7)}px`);
         star.style.setProperty('--fx-opacity', randomBetween(0.22, 0.42).toFixed(3));
-
         fx.appendChild(star);
     }
 }
 
 createStreamStarEffect();
 
+/* ==========================================================================
+   5. КОМИКС-ПОПАПЫ ПРИ НАВЕДЕНИИ НА SLA DIKX
+   ========================================================================== */
+const COMIC_POPUPS = [
+    { text: 'СУКА', color: 'pink', x: -0.6, y: -1.1, fromX: -58, fromY: -24, rotate: -18, delay: 0 },
+    { text: 'БЛЯДЬ', color: 'yellow', x: 0.35, y: -2.2, fromX: 12, fromY: -54, rotate: 12, delay: 0.32 },
+    { text: 'НАХУЙ', color: 'blue', x: 1.15, y: -0.7, fromX: 66, fromY: -4, rotate: 15, delay: 0.64 },
+    { text: 'БЛЯДЬ', color: 'lime', x: 0.15, y: 0.8, fromX: -16, fromY: 52, rotate: -10, delay: 0.96 },
+    { text: 'НАХУЙ', color: 'orange', x: -1.05, y: 0.3, fromX: -62, fromY: 12, rotate: 10, delay: 1.28 }
+];
+
+function showComicPopups(trigger) {
+    if (trigger.dataset.comicPlaying === 'true') return;
+
+    trigger.dataset.comicPlaying = 'true';
+
+    const rect = trigger.getBoundingClientRect();
+
+    COMIC_POPUPS.forEach(pop => {
+        const element = document.createElement('span');
+        element.className = `comic-pop comic-pop-${pop.color}`;
+        element.textContent = pop.text;
+        element.setAttribute('aria-hidden', 'true');
+        element.style.left = `${rect.left + rect.width * pop.x}px`;
+        element.style.top = `${rect.top + rect.height * pop.y}px`;
+        element.style.setProperty('--comic-from-x', `${pop.fromX}px`);
+        element.style.setProperty('--comic-from-y', `${pop.fromY}px`);
+        element.style.setProperty('--comic-rotate', `${pop.rotate}deg`);
+        element.style.setProperty('--comic-delay', `${pop.delay}s`);
+
+        document.body.appendChild(element);
+
+        window.setTimeout(() => element.remove(), 3600);
+    });
+
+    window.setTimeout(() => {
+        delete trigger.dataset.comicPlaying;
+    }, 3600);
+}
+
+const sladikxTrigger = document.getElementById('sladikx-trigger');
+
+if (sladikxTrigger) {
+    sladikxTrigger.addEventListener('pointerenter', () => {
+        showComicPopups(sladikxTrigger);
+    });
+}
+
+/* ==========================================================================
+   6. СЕРДЕЧКИ ВОКРУГ АВАТАРКИ
+   ========================================================================== */
 const avatarContainer = document.querySelector('.avatar-container');
 
 if (avatarContainer) {
@@ -376,6 +434,9 @@ if (avatarContainer) {
     }
 }
 
+/* ==========================================================================
+   7. ПЕРЕРИСОВКА ТЕКСТА ПОСЛЕ ИЗМЕНЕНИЯ МАСШТАБА
+   ========================================================================== */
 let zoomRepaintTimer;
 
 function repaintButtonText() {

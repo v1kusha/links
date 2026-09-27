@@ -612,3 +612,74 @@ body {
     color: var(--text-secondary);
     opacity: 0.6;
 }
+
+/* ==========================================================================
+   КОМИКС-ПОПАПЫ ПРИ НАВЕДЕНИИ НА КАРТОЧКИ
+   ========================================================================== */
+.comic-pop {
+    position: fixed;
+    z-index: 50;
+    display: block;
+    padding: 4px 8px;
+    color: #160f1e;
+    border: 2px solid #160f1e;
+    border-radius: 5px 11px 5px 11px;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45);
+    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+    font-size: clamp(13px, 3vw, 19px);
+    font-weight: 900;
+    letter-spacing: 0.7px;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+    will-change: transform, opacity;
+    animation: comicPopFly 1.25s cubic-bezier(0.2, 0.8, 0.25, 1) var(--comic-delay) both;
+}
+
+.comic-pop-pink {
+    background: #ff69b4;
+}
+
+.comic-pop-yellow {
+    background: #facc15;
+}
+
+.comic-pop-blue {
+    background: #38bdf8;
+}
+
+.comic-pop-lime {
+    background: #a3e635;
+}
+
+.comic-pop-orange {
+    background: #fb923c;
+}
+
+@keyframes comicPopFly {
+    0% {
+        opacity: 0;
+        transform: translate3d(var(--comic-from-x), var(--comic-from-y), 0)
+        rotate(var(--comic-rotate)) scale(0.25);
+    }
+
+    22% {
+        opacity: 1;
+    }
+
+    48% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotate(0deg) scale(1.08);
+    }
+
+    72% {
+        opacity: 0.96;
+        transform: translate3d(8px, -7px, 0) rotate(5deg) scale(0.95);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate3d(15px, -13px, 0) rotate(0deg) scale(0.72);
+    }
+}
