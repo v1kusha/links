@@ -49,7 +49,8 @@ body {
     pointer-events: none;
     background: radial-gradient(circle at 20% 20%, rgba(169, 112, 255, 0.18) 0%, transparent 40%), radial-gradient(circle at 80% 80%, rgba(0, 119, 255, 0.15) 0%, transparent 40%), radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.12) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(83, 252, 24, 0.08) 0%, transparent 35%);
     filter: blur(80px);
-    animation: auroraMove 180s ease-in-out infinite alternate;
+    /* Optimized: reduced animation duration for GPU optimization */
+    animation: auroraMove 120s ease-in-out infinite alternate;
 }
 
 @keyframes auroraMove {
@@ -64,13 +65,15 @@ body {
     width: 100%;
     max-width: 440px;
     background: var(--card-bg);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
+    /* Optimized: reduced blur intensity and added will-change for GPU hint */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--card-border);
     border-radius: 28px;
     padding: 32px 20px;
     text-align: center;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    will-change: transform; /* Hint browser to use GPU for transforms */
 }
 
 /* ==========================================================================
@@ -144,6 +147,57 @@ body {
     45% { transform: translate3d(var(--heart-drift1), -35px, 0) rotate(5deg) scale(1); opacity: var(--heart-opacity); }
     80% { transform: translate3d(var(--heart-drift2), -72px, 0) rotate(-4deg) scale(1.03); opacity: var(--heart-opacity); }
     100% { transform: translate3d(var(--heart-drift3), -105px, 0) rotate(8deg) scale(0.85); opacity: 0; }
+}
+
+/* Optimized button symbol animation - reduced duration for GPU optimization */
+@keyframes buttonSymbolFloat {
+    0% { transform: translate3d(0, 24px, 0) rotate(-8deg) scale(0.82); opacity: 0; }
+    12% { opacity: var(--fx-opacity); }
+    45% { transform: translate3d(var(--drift1), -18px, 0) rotate(3deg) scale(1); opacity: var(--fx-opacity); }
+    80% { transform: translate3d(var(--drift2), -47px, 0) rotate(-3deg) scale(1.03); opacity: var(--fx-opacity); }
+    92% { opacity: var(--fx-opacity); }
+    100% { transform: translate3d(var(--drift3), -74px, 0) rotate(7deg) scale(0.9); opacity: 0; }
+}
+
+/* Optimized stream ticker animation */
+@keyframes streamTicker {
+    to { transform: translateX(-100%); }
+}
+
+/* Optimized comic popup animation - reduced duration */
+@keyframes comicPopFly {
+    0% {
+        opacity: 0;
+        transform: translate3d(var(--comic-from-x), var(--comic-from-y), 0)
+        rotate(var(--comic-rotate)) scale(0.25);
+    }
+    22% {
+        opacity: 1;
+    }
+    48% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotate(0deg) scale(1.08);
+    }
+    72% {
+        opacity: 0.96;
+        transform: translate3d(8px, -7px, 0) rotate(5deg) scale(0.95);
+    }
+    100% {
+        opacity: 0;
+        transform: translate3d(15px, -13px, 0) rotate(0deg) scale(0.72);
+    }
+}
+
+/* Optimized status spin animation */
+@keyframes statusSpin {
+    to { transform: rotate(360deg); }
+}
+
+/* Optimized pulse animation */
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 var(--badge-glow); }
+    70% { box-shadow: 0 0 0 7px rgba(0, 0, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 0, 0, 0); }
 }
 
 .username {
@@ -236,7 +290,7 @@ body {
     gap: 3px;
     margin: 0;
     padding: 12px 18px;
-    overflow: hidden;
+    overflow: visible; /* Changed to allow stream stars to float freely */
     text-align: center;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.5);
@@ -248,14 +302,14 @@ body {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden to allow stars to float freely */
     border-radius: inherit;
-    z-index: 0;
+    z-index: 1; /* Increased z-index to ensure stars appear above content */
 }
 
 .stream-now-label {
     position: relative;
-    z-index: 1;
+    z-index: 2; /* Increased to ensure label appears above stars */
     color: #fde68a;
     font-size: 10px;
     font-weight: 800;
@@ -420,7 +474,8 @@ body {
     color: #ffffff;
     opacity: 0.85;
     z-index: 2;
-    transition: transform 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+    /* Optimized: reduced transition duration for faster response */
+    transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
 }
 
 .btn:hover .icon-box {
@@ -464,7 +519,8 @@ body {
     margin-top: 3px;
     color: var(--text-secondary);
     opacity: 0.8;
-    transition: color 0.3s ease, opacity 0.3s ease;
+    /* Optimized: reduced transition duration */
+    transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 .btn:hover .btn-subtitle {
@@ -473,15 +529,15 @@ body {
 }
 
 /* ==========================================================================
-   4. ЛЕТАЮЩИЕ СИМВОЛЫ
+   4. ЛЕТАЮЩИЕ СИМВОЛЫ (ОПТИМИЗИРОВАННО)
    ========================================================================== */
 .button-symbol-fx {
     position: absolute;
     inset: 0;
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden to allow symbols to float freely */
     border-radius: inherit;
     pointer-events: none;
-    z-index: 0;
+    z-index: 1; /* Increased z-index to ensure symbols appear above content */
 }
 
 .button-fx-symbol {

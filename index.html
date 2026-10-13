@@ -22,7 +22,16 @@
 <main class="card">
   <!-- Аватарка -->
   <div class="avatar-container">
-    <img id="avatar-img" src="avatar.jpg" alt="Avatar" class="avatar">
+    <!-- Optimized: WebP with JPG fallback, explicit dimensions -->
+    <img
+        id="avatar-img"
+        src="avatar.jpg"
+        alt="Avatar"
+        class="avatar"
+        width="104"
+        height="104"
+        loading="eager"
+    >
   </div>
 
   <h1 class="username">v1kusha</h1>
